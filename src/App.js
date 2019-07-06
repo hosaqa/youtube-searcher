@@ -1,10 +1,10 @@
 import React from 'react';
 import { Global } from '@emotion/core';
-import { globalStyles } from './globalStyles';
-import Container from "@material-ui/core/Container";
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import { globalStyles } from './globalStyles';
+import { Board } from './Board';
 
 const App = () => {
   return (
@@ -17,7 +17,7 @@ const App = () => {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Container>1111222</Container>
+      <Board />
     </>
   );
 };
