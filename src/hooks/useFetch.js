@@ -14,8 +14,8 @@ const useFetch = url => {
   useEffect(() => {
     fetchUrl();
   }, []);
-  
-  return [data, loading];
-}
 
-export {useFetch};
+  return [data, loading];
+};
+
+export { useFetch };

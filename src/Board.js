@@ -1,20 +1,20 @@
 import React from 'react';
-import Container from "@material-ui/core/Container";
+import Container from '@material-ui/core/Container';
 import styled from '@emotion/styled';
-import { Search } from './Search';
+import SearchForm from './SearchForm';
 
 const Wrapper = styled.div`
   padding: 50px;
 `;
 
-const Board = ({children}) => {
+const Board = ({ children }) => {
   return (
     <Wrapper>
       <Container>
-        <Search />
+        <SearchForm />
       </Container>
     </Wrapper>
-  )
-}
+  );
+};
 
 export { Board };
