@@ -14,10 +14,10 @@ function handleErrors(response) {
 
 export const fetchVideosBegin = () => ({ type: FETCH_VIDEOS_BEGIN });
 
-export const fetchVideosSuccess = data => ({
+export const fetchVideosSuccess = items => ({
   type: FETCH_VIDEOS_SUCCESS,
   payload: {
-    videos: data.items,
+    items,
   },
 });
 
@@ -28,7 +28,7 @@ export const fetchVideosFailure = error => ({
   },
 });
 
-export const fetchVideos = ({ keyword }) => {
+export const fetchVideos = keyword => {
   const URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${keyword}&type=video&key=${API_KEY}`;
 
   return dispatch => {
@@ -36,8 +36,8 @@ export const fetchVideos = ({ keyword }) => {
     return fetch(URL)
       .then(handleErrors)
       .then(res => res.json())
-      .then(({ data }) => {
-        dispatch(fetchVideosSuccess(data));
+      .then(data => {
+        dispatch(fetchVideosSuccess(data.items));
       })
       .catch(error => dispatch(fetchVideosFailure(error)));
   };

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import InputBase from '@material-ui/core/InputBase';
@@ -6,7 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
 import SearchIcon from '@material-ui/icons/Search';
 import styled from '@emotion/styled';
-import { SearchList } from './SearchList';
+import SearchList from './SearchList';
 import { fetchVideos } from './actions';
 
 const FormPaper = styled(Paper)`
@@ -21,16 +22,15 @@ const Input = styled(InputBase)`
   padding: 0 5px 0 0;
 `;
 
-const SearchForm = () => {
+const SearchForm = ({ fetchVideos, videos }) => {
   const [inputValue, setInputValue] = useState('');
 
   const handleChange = e => setInputValue(e.target.value);
 
   const handleSubmit = e => {
     e.preventDefault();
-    fetchVideos(data => {
-      console.log(data);
-    });
+
+    fetchVideos(inputValue);
   };
 
   return (
@@ -62,6 +62,10 @@ const SearchForm = () => {
 };
 
 export default connect(
-  ({ videosIsLoading }) => ({ videosIsLoading }),
+  ({ videosIsLoading, videos }) => ({ videosIsLoading, videos }),
   { fetchVideos }
 )(SearchForm);
+
+SearchForm.propTypes = {
+  fetchVideos: PropTypes.func,
+};

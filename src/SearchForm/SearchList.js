@@ -1,15 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Paper from '@material-ui/core/Paper';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import styled from '@emotion/styled';
-import { useFetch } from '../hooks/useFetch';
-
-const StyledListItem = styled(ListItem)`
-  background-color: ${({ theme }) => theme.palette.background.paper};
-`;
+import { SearchListItem } from './SearchListItem';
 
 const ListWrapper = styled.div`
   margin: 10px 0 0;
@@ -23,40 +18,21 @@ const ListPaper = styled(Paper)`
   top: 0;
 `;
 
-const ItemThumb = styled.img`
-  width: 120px;
-  height: 90px;
-  margin: 0 12px 0 0;
-  display: block;
-  order: -1;
-  flex-shrink: 0;
-`;
-
-const SearchList = ({ listVisibility, keyword, setListVisibility }) => {
-  //if (!keyword || !listVisibility) return false;
-
-  const URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${keyword}&type=video&key=AIzaSyCkTjcDo3C_ElyFdhaLqdih7zVPfEWx7-c`;
-
-  const [list, loading] = useFetch(URL);
-  // console.log(list);
-  if (!list || list.length === 0) return false;
+const SearchList = ({ videos }) => {
+  if (!videos) return false;
 
   return (
     <ListWrapper>
       <ListPaper>
         <List>
-          {list.items.map(item => {
+          {videos.map(item => {
             return (
-              <ListItem key={item.id.videoId}>
-                <ListItemText
-                  primary={item.snippet.title}
-                  secondary={item.snippet.publishedAt}
-                />
-                <ItemThumb
-                  src={item.snippet.thumbnails.default.url}
-                  alt={item.snippet.title}
-                />
-              </ListItem>
+              <SearchListItem
+                key={item.id.videoId}
+                title={unescape(item.snippet.title)}
+                subtitle={item.snippet.publishedAt}
+                img={item.snippet.thumbnails.default.url}
+              />
             );
           })}
         </List>
@@ -66,9 +42,10 @@ const SearchList = ({ listVisibility, keyword, setListVisibility }) => {
 };
 
 SearchList.propTypes = {
-  listVisibility: PropTypes.bool,
-  keyword: PropTypes.string,
-  setListVisibility: PropTypes.func,
+  videos: PropTypes.arrayOf(PropTypes.object),
 };
 
-export { SearchList };
+export default connect(({ searchReducer }) => ({
+  videosIsLoading: searchReducer.videosIsLoading,
+  videos: searchReducer.videos,
+}))(SearchList);
