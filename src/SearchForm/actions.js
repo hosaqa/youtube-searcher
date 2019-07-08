@@ -14,10 +14,18 @@ function handleErrors(response) {
 
 export const fetchVideosBegin = () => ({ type: FETCH_VIDEOS_BEGIN });
 
-export const fetchVideosSuccess = items => ({
+export const fetchVideosSuccess = ({
+  keyword,
+  items,
+  prevPageToken,
+  nextPageToken,
+}) => ({
   type: FETCH_VIDEOS_SUCCESS,
   payload: {
+    keyword,
     items,
+    prevPageToken,
+    nextPageToken,
   },
 });
 
@@ -28,8 +36,11 @@ export const fetchVideosFailure = error => ({
   },
 });
 
-export const fetchVideos = keyword => {
-  const URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${keyword}&type=video&key=${API_KEY}`;
+export const fetchVideos = ({ keyword, token }) => {
+  let URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${keyword}&type=video&key=${API_KEY}`;
+  const pageTokenParam = token ? `&pageToken=${token}` : '';
+
+  URL = `${URL}${pageTokenParam}`;
 
   return dispatch => {
     dispatch(fetchVideosBegin());
@@ -37,7 +48,14 @@ export const fetchVideos = keyword => {
       .then(handleErrors)
       .then(res => res.json())
       .then(data => {
-        dispatch(fetchVideosSuccess(data.items));
+        dispatch(
+          fetchVideosSuccess({
+            keyword: keyword,
+            items: data.items,
+            prevPageToken: data.prevPageToken,
+            nextPageToken: data.nextPageToken,
+          })
+        );
       })
       .catch(error => dispatch(fetchVideosFailure(error)));
   };

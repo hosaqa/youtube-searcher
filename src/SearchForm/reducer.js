@@ -5,8 +5,11 @@ import {
 } from './constants';
 
 const initialState = {
+  keyword: null,
   videos: null,
   videosIsLoading: false,
+  prevPageToken: null,
+  nextPageToken: null,
 };
 
 const searchReducer = (state = initialState, action) => {
@@ -17,10 +20,14 @@ const searchReducer = (state = initialState, action) => {
         videosIsLoading: true,
       };
     case FETCH_VIDEOS_SUCCESS:
+      console.log(action.payload.keyword);
       return {
         ...state,
+        keyword: action.payload.keyword,
         videosIsLoading: false,
         videos: action.payload.items,
+        prevPageToken: action.payload.prevPageToken,
+        nextPageToken: action.payload.nextPageToken,
       };
     case FETCH_VIDEOS_FAILURE:
       return {

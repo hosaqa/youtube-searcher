@@ -30,7 +30,7 @@ const SearchForm = ({ fetchVideos, videos }) => {
   const handleSubmit = e => {
     e.preventDefault();
 
-    fetchVideos(inputValue);
+    fetchVideos({ keyword: inputValue.split(' ').join('+') });
   };
 
   return (
