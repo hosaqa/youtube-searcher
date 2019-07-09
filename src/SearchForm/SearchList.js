@@ -74,7 +74,7 @@ const SearchList = ({
       token: token,
     });
   };
-  console.log(isVisible);
+
   return (
     <Wrapper isVisible={isVisible}>
       <ListPaper>
@@ -92,7 +92,9 @@ const SearchList = ({
                     <SearchListItem
                       key={item.id.videoId}
                       title={unescape(item.snippet.title)}
-                      subtitle={item.snippet.publishedAt}
+                      subtitle={new Date(
+                        item.snippet.publishedAt
+                      ).toDateString()}
                       img={item.snippet.thumbnails.default.url}
                     />
                   );
