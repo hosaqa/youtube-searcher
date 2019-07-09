@@ -7,19 +7,12 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { globalStyles } from './globalStyles';
 import { Board } from './Board';
+import Menu from './Menu';
 
 const App = () => {
   return (
     <Provider store={store}>
-      <Global styles={globalStyles} />
-      <AppBar position="static" color="default">
-        <Toolbar>
-          <Typography variant="h6" color="inherit">
-            Youtube searcher
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Board />
+      <Menu />
     </Provider>
   );
 };

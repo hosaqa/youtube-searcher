@@ -7,6 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
 import SearchIcon from '@material-ui/icons/Search';
 import styled from '@emotion/styled';
+import onClickOutside from 'react-onclickoutside';
 import SearchList from './SearchList';
 import { fetchVideos } from './actions';
 
@@ -22,14 +23,20 @@ const Input = styled(InputBase)`
   padding: 0 5px 0 0;
 `;
 
-const SearchForm = ({ fetchVideos, videos }) => {
+const SearchForm = ({ fetchVideos }) => {
   const [inputValue, setInputValue] = useState('');
+  const [listVisibility, setListVisibility] = useState(false);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const toggle = () => setIsOpen(!isOpen);
+
+  SearchForm.handleClickOutside = () => setIsOpen(false);
 
   const handleChange = e => setInputValue(e.target.value);
 
   const handleSubmit = e => {
     e.preventDefault();
-
+    setListVisibility(true);
     fetchVideos({ keyword: inputValue.split(' ').join('+') });
   };
 
@@ -55,16 +62,22 @@ const SearchForm = ({ fetchVideos, videos }) => {
             </Fab>
           </FormPaper>
         </form>
-        <SearchList />
+        <SearchList isVisible={listVisibility} />
       </Grid>
     </Grid>
   );
 };
 
-export default connect(
-  ({ videosIsLoading, videos }) => ({ videosIsLoading, videos }),
-  { fetchVideos }
-)(SearchForm);
+const clickOutsideConfig = {
+  handleClickOutside: () => SearchForm.handleClickOutside,
+};
+
+export default onClickOutside(SearchForm, clickOutsideConfig);
+
+// export default connect(
+//   ({ videosIsLoading }) => ({ videosIsLoading }),
+//   { fetchVideos }
+// )(SearchForm);
 
 SearchForm.propTypes = {
   fetchVideos: PropTypes.func,

@@ -1,11 +1,13 @@
-import React, { useEffect, useState, useRef } from 'react';
-
+import React from 'react';
 import PropTypes from 'prop-types';
+import unescape from 'unescape';
 import { connect } from 'react-redux';
 import Paper from '@material-ui/core/Paper';
 import List from '@material-ui/core/List';
 import styled from '@emotion/styled';
 import ListItem from '@material-ui/core/ListItem';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
@@ -17,6 +19,7 @@ const Wrapper = styled.div`
   margin: 10px 0 0;
   position: relative;
   width: 100%;
+  visibility: ${({ isVisible }) => (isVisible ? 'visible' : 'hidden')};
 `;
 
 const ListPaper = styled(Paper)`
@@ -55,6 +58,7 @@ const Preloader = styled.div`
 `;
 
 const SearchList = ({
+  isVisible,
   keyword,
   videosIsLoading,
   videos,
@@ -70,49 +74,56 @@ const SearchList = ({
       token: token,
     });
   };
-
+  console.log(isVisible);
   return (
-    <Wrapper>
+    <Wrapper isVisible={isVisible}>
       <ListPaper>
         {videosIsLoading && (
           <Preloader>
             <CircularProgress />
           </Preloader>
         )}
-
         {videos && (
-          <ListWrapper hidden={videosIsLoading}>
-            {videos.map(item => {
-              return (
-                <SearchListItem
-                  key={item.id.videoId}
-                  title={item.snippet.title}
-                  subtitle={item.snippet.publishedAt}
-                  img={item.snippet.thumbnails.default.url}
-                />
-              );
-            })}
-            <ListItem>
-              <Pagination>
-                <IconButton
-                  aria-label="Prev page"
-                  size="small"
-                  disabled={!prevPageToken || videosIsLoading}
-                  onClick={() => handlePagination(prevPageToken)}
-                >
-                  <ArrowBackIcon fontSize="inherit" />
-                </IconButton>
-                <IconButton
-                  aria-label="Next page"
-                  size="small"
-                  disabled={!nextPageToken || videosIsLoading}
-                  onClick={() => handlePagination(nextPageToken)}
-                >
-                  <ArrowForwardIcon fontSize="inherit" />
-                </IconButton>
-              </Pagination>
-            </ListItem>
-          </ListWrapper>
+          <>
+            {videos && videos.length ? (
+              <ListWrapper hidden={videosIsLoading}>
+                {videos.map(item => {
+                  return (
+                    <SearchListItem
+                      key={item.id.videoId}
+                      title={unescape(item.snippet.title)}
+                      subtitle={item.snippet.publishedAt}
+                      img={item.snippet.thumbnails.default.url}
+                    />
+                  );
+                })}
+                <ListItem>
+                  <Pagination>
+                    <IconButton
+                      aria-label="Prev page"
+                      size="small"
+                      disabled={!prevPageToken || videosIsLoading}
+                      onClick={() => handlePagination(prevPageToken)}
+                    >
+                      <ArrowBackIcon fontSize="inherit" />
+                    </IconButton>
+                    <IconButton
+                      aria-label="Next page"
+                      size="small"
+                      disabled={!nextPageToken || videosIsLoading}
+                      onClick={() => handlePagination(nextPageToken)}
+                    >
+                      <ArrowForwardIcon fontSize="inherit" />
+                    </IconButton>
+                  </Pagination>
+                </ListItem>
+              </ListWrapper>
+            ) : (
+              <Box p={2} textAlign="center">
+                <Typography variant="h6">No results found</Typography>
+              </Box>
+            )}
+          </>
         )}
       </ListPaper>
     </Wrapper>
@@ -120,6 +131,7 @@ const SearchList = ({
 };
 
 SearchList.propTypes = {
+  isVisible: PropTypes.bool,
   keyword: PropTypes.string,
   videosIsLoading: PropTypes.bool,
   videos: PropTypes.arrayOf(PropTypes.object),

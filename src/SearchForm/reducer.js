@@ -20,7 +20,6 @@ const searchReducer = (state = initialState, action) => {
         videosIsLoading: true,
       };
     case FETCH_VIDEOS_SUCCESS:
-      console.log(action.payload.keyword);
       return {
         ...state,
         keyword: action.payload.keyword,

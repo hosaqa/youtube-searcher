@@ -7,7 +7,7 @@ const Wrapper = styled.div`
   padding: 50px;
 `;
 
-const Board = ({ children }) => {
+const Board = () => {
   return (
     <Wrapper>
       <Container>
