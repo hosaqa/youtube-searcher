@@ -12,11 +12,10 @@ import IconButton from '@material-ui/core/IconButton';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { SearchListItem } from './SearchListItem';
+import SearchListItem from './SearchListItem';
 import { fetchVideos } from './actions';
 
 const Wrapper = styled.div`
-  margin: 10px 0 0;
   position: relative;
   width: 100%;
   visibility: ${({ isVisible }) => (isVisible ? 'visible' : 'hidden')};
@@ -25,7 +24,7 @@ const Wrapper = styled.div`
 const ListPaper = styled(Paper)`
   position: absolute;
   width: 100%;
-  top: 0;
+  top: 10px;
   min-height: 80px;
   max-height: calc(100vh - 300px);
   overflow: auto;
@@ -91,6 +90,7 @@ const SearchList = ({
                   return (
                     <SearchListItem
                       key={item.id.videoId}
+                      videoID={item.id.videoId}
                       title={unescape(item.snippet.title)}
                       subtitle={new Date(
                         item.snippet.publishedAt

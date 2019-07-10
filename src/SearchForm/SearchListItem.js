@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import Fab from '@material-ui/core/Fab';
 import styled from '@emotion/styled';
+import { setCurrentVideoID } from '../WatchBoard/actions';
 
 const ItemThumb = styled.img`
   width: 120px;
@@ -22,13 +24,26 @@ const PlayButton = styled(Fab)`
   margin: 0 0 0 12px;
 `;
 
-const SearchListItem = ({ title, subtitle, img }) => (
+const SearchListItem = ({
+  videoID,
+  title,
+  subtitle,
+  img,
+  currentVideoID,
+  setCurrentVideoID,
+}) => (
   <>
     {' '}
     <ListItem>
       <ListItemText primary={title} secondary={subtitle} />
       <ItemThumb src={img} alt={title} />
-      <PlayButton aria-label="Play video" size="small" color="secondary">
+      <PlayButton
+        onClick={() => setCurrentVideoID(videoID)}
+        aria-label="Play video"
+        title={currentVideoID === videoID ? 'This video is playing now' : null}
+        size="small"
+        color="secondary"
+      >
         <PlayArrowIcon />
       </PlayButton>
     </ListItem>{' '}
@@ -37,9 +52,17 @@ const SearchListItem = ({ title, subtitle, img }) => (
 );
 
 SearchListItem.propTypes = {
+  videoID: PropTypes.string,
   title: PropTypes.string,
   subtitle: PropTypes.string,
   img: PropTypes.string,
+  currentVideoID: PropTypes.string,
+  setCurrentVideoID: PropTypes.func,
 };
 
-export { SearchListItem };
+export default connect(
+  ({ watchReducer }) => ({
+    currentVideoID: watchReducer.currentVideoID,
+  }),
+  { setCurrentVideoID }
+)(SearchListItem);

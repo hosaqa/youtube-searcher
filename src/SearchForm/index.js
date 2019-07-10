@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grid from '@material-ui/core/Grid';
 import InputBase from '@material-ui/core/InputBase';
@@ -47,13 +49,18 @@ const SearchForm = ({ videosIsLoading, fetchVideos }) => {
           <div>
             <form onSubmit={handleSubmit} noValidate autoComplete="off">
               <FormPaper>
-                <Input
-                  type="search"
-                  placeholder="Search"
-                  inputProps={{ 'aria-label': 'Search videos' }}
-                  value={inputValue}
-                  onChange={handleChange}
-                />
+                <FormControl>
+                  <Input
+                    id="search-input"
+                    type="search"
+                    placeholder="Search"
+                    inputProps={{ 'aria-label': 'Search videos' }}
+                    value={inputValue}
+                    onChange={handleChange}
+                    required
+                  />
+                  <FormHelperText id="search-input">Error</FormHelperText>
+                </FormControl>
                 <Fab
                   type="submit"
                   size="small"

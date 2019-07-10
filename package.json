@@ -10,7 +10,6 @@
     "emotion-normalize": "^10.0.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-onclickoutside": "^6.8.0",
     "react-redux": "^7.1.0",
     "react-scripts": "3.0.1",
     "react-youtube": "^7.9.0",
