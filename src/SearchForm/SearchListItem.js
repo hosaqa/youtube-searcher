@@ -8,6 +8,7 @@ import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import Fab from '@material-ui/core/Fab';
 import styled from '@emotion/styled';
 import { setCurrentVideoID } from '../WatchBoard/actions';
+import { setListVisibility } from './actions';
 
 const ItemThumb = styled.img`
   width: 120px;
@@ -31,25 +32,34 @@ const SearchListItem = ({
   img,
   currentVideoID,
   setCurrentVideoID,
-}) => (
-  <>
-    {' '}
-    <ListItem>
-      <ListItemText primary={title} secondary={subtitle} />
-      <ItemThumb src={img} alt={title} />
-      <PlayButton
-        onClick={() => setCurrentVideoID(videoID)}
-        aria-label="Play video"
-        title={currentVideoID === videoID ? 'This video is playing now' : null}
-        size="small"
-        color="secondary"
-      >
-        <PlayArrowIcon />
-      </PlayButton>
-    </ListItem>{' '}
-    <Divider />{' '}
-  </>
-);
+  setListVisibility,
+}) => {
+  const handleClick = videoID => {
+    setListVisibility(false);
+    setCurrentVideoID(videoID);
+  };
+
+  return (
+    <>
+      <ListItem>
+        <ListItemText primary={title} secondary={subtitle} />
+        <ItemThumb src={img} alt={title} />
+        <PlayButton
+          onClick={() => handleClick(videoID)}
+          aria-label="Play video"
+          title={
+            currentVideoID === videoID ? 'This video is playing now' : null
+          }
+          size="small"
+          color="secondary"
+        >
+          <PlayArrowIcon />
+        </PlayButton>
+      </ListItem>
+      <Divider />
+    </>
+  );
+};
 
 SearchListItem.propTypes = {
   videoID: PropTypes.string,
@@ -58,11 +68,12 @@ SearchListItem.propTypes = {
   img: PropTypes.string,
   currentVideoID: PropTypes.string,
   setCurrentVideoID: PropTypes.func,
+  setListVisibility: PropTypes.func,
 };
 
 export default connect(
   ({ watchReducer }) => ({
     currentVideoID: watchReducer.currentVideoID,
   }),
-  { setCurrentVideoID }
+  { setCurrentVideoID, setListVisibility }
 )(SearchListItem);

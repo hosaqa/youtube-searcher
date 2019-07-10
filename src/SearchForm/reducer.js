@@ -2,6 +2,7 @@ import {
   FETCH_VIDEOS_BEGIN,
   FETCH_VIDEOS_SUCCESS,
   FETCH_VIDEOS_FAILURE,
+  SET_LIST_VISIBILITY,
 } from './constants';
 
 const initialState = {
@@ -10,6 +11,7 @@ const initialState = {
   videosIsLoading: false,
   prevPageToken: null,
   nextPageToken: null,
+  listIsVisible: false,
 };
 
 const searchReducer = (state = initialState, action) => {
@@ -33,6 +35,11 @@ const searchReducer = (state = initialState, action) => {
         ...state,
         videosIsLoading: false,
         videos: [],
+      };
+    case SET_LIST_VISIBILITY:
+      return {
+        ...state,
+        listIsVisible: action.payload.value,
       };
     default:
       return state;

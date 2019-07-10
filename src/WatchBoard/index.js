@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Box from '@material-ui/core/Box';
@@ -26,11 +26,6 @@ const PlayerSkeleton = styled(Box)`
   justify-content: center;
 `;
 
-const Player = styled(YouTube)`
-  height: 100%;
-  width: 100%;
-`;
-
 const opts = {
   height: '390',
   width: '100%',
@@ -40,11 +35,23 @@ const opts = {
 };
 
 const WatchBoard = ({ currentVideoID, setCurrentVideoID }) => {
+  const player = useRef(null);
+
+  const addVideoToHistory = () => {
+    let historyArr = localStorage.getItem('dda-videos-history');
+    historyArr = historyArr ? JSON.parse(historyArr) : [];
+  };
+  console.log(player);
   return (
-    <Wrapper>
+    <Wrapper ref={player}>
       <Content p={2}>
         {currentVideoID ? (
-          <YouTube videoId={currentVideoID} opts={opts} />
+          <YouTube
+            ref={player}
+            videoId={currentVideoID}
+            opts={opts}
+            onPlay={addVideoToHistory}
+          />
         ) : (
           <PlayerSkeleton bgcolor="#efefef" borderRadius={4}>
             <Typography variant="h2">Lets watch</Typography>

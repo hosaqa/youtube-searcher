@@ -2,6 +2,7 @@ import {
   FETCH_VIDEOS_BEGIN,
   FETCH_VIDEOS_SUCCESS,
   FETCH_VIDEOS_FAILURE,
+  SET_LIST_VISIBILITY,
 } from './constants';
 import { API_KEY } from '../constants';
 
@@ -60,3 +61,10 @@ export const fetchVideos = ({ keyword, token }) => {
       .catch(error => dispatch(fetchVideosFailure(error)));
   };
 };
+
+export const setListVisibility = value => ({
+  type: SET_LIST_VISIBILITY,
+  payload: {
+    value,
+  },
+});

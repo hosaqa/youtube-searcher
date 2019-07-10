@@ -57,7 +57,7 @@ const Preloader = styled.div`
 `;
 
 const SearchList = ({
-  isVisible,
+  listIsVisible,
   keyword,
   videosIsLoading,
   videos,
@@ -73,9 +73,9 @@ const SearchList = ({
       token: token,
     });
   };
-
+  
   return (
-    <Wrapper isVisible={isVisible}>
+    <Wrapper isVisible={listIsVisible}>
       <ListPaper>
         {videosIsLoading && (
           <Preloader>
@@ -133,7 +133,7 @@ const SearchList = ({
 };
 
 SearchList.propTypes = {
-  isVisible: PropTypes.bool,
+  listIsVisible: PropTypes.bool,
   keyword: PropTypes.string,
   videosIsLoading: PropTypes.bool,
   videos: PropTypes.arrayOf(PropTypes.object),
@@ -144,6 +144,7 @@ SearchList.propTypes = {
 
 export default connect(
   ({ searchReducer }) => ({
+    listIsVisible: searchReducer.listIsVisible,
     keyword: searchReducer.keyword,
     videosIsLoading: searchReducer.videosIsLoading,
     videos: searchReducer.videos,
