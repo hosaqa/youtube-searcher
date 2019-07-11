@@ -1,1 +1,3 @@
 export const SET_CURRENT_VIDEO_ID = 'SET_CURRENT_VIDEO_ID';
+export const UPDATE_HISTORY_STORAGE = 'UPDATE_HISTORY_STORAGE';
+export const HISTORY_STORAGE_KEY = 'dda-videos-history';

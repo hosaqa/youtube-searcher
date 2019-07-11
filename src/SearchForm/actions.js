@@ -6,13 +6,6 @@ import {
 } from './constants';
 import { API_KEY } from '../constants';
 
-function handleErrors(response) {
-  if (!response.ok) {
-    throw Error(response.statusText);
-  }
-  return response;
-}
-
 export const fetchVideosBegin = () => ({ type: FETCH_VIDEOS_BEGIN });
 
 export const fetchVideosSuccess = ({
@@ -46,7 +39,6 @@ export const fetchVideos = ({ keyword, token }) => {
   return dispatch => {
     dispatch(fetchVideosBegin());
     return fetch(URL)
-      .then(handleErrors)
       .then(res => res.json())
       .then(data => {
         dispatch(

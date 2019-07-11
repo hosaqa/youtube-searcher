@@ -21,7 +21,7 @@ const Layout = () => {
             <SearchForm />
           </Box>
           <Grid justify="center" container spacing={2}>
-            <Grid item xs={3}>
+            <Grid item xs={4}>
               <HistoryBoard />
             </Grid>
             <Grid item xs={6}>
