@@ -8,6 +8,7 @@ import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import HistoryIcon from '@material-ui/icons/History';
 import HistoryBoardItem from './HistoryBoardItem';
+import Divider from '@material-ui/core/Divider';
 
 const Title = styled(Typography)`
   display: flex;
@@ -18,33 +19,39 @@ const TitleIcon = styled(HistoryIcon)`
   margin: 0 7px 0 0;
 `;
 
-const HistoryBoard = () => {
-  const historyArr = JSON.parse(localStorage.getItem('dda-videos-history'));
-
-  return (
-    <Paper>
-      <Box p={2}>
-        <Title variant="h6">
-          <TitleIcon />
-          Your history
-        </Title>
-        <List>
-          {historyArr &&
-            historyArr.length &&
-            historyArr.map((item, index) => (
+const HistoryBoard = ({ history }) => (
+  <Paper>
+    <Box p={2}>
+      <Title variant="h6">
+        <TitleIcon />
+        Your history
+      </Title>
+      <List>
+        {history && history.length ? (
+          history.map((item, index) => (
+            <>
               <HistoryBoardItem
                 key={`${item.id}${index}`}
                 id={item.id}
                 title={item.title}
+                itemIndex={index}
                 img={item.img}
               />
-            ))}
-        </List>
-      </Box>
-    </Paper>
-  );
+              {index + 1 !== history.length && <Divider />}
+            </>
+          ))
+        ) : (
+          <Typography variant="body1">You didn`t watch anything</Typography>
+        )}
+      </List>
+    </Box>
+  </Paper>
+);
+
+HistoryBoard.propTypes = {
+  history: PropTypes.arrayOf(PropTypes.object),
 };
 
-HistoryBoard.propTypes = {};
-
-export default HistoryBoard;
+export default connect(({ watchReducer }) => ({
+  history: watchReducer.history,
+}))(HistoryBoard);

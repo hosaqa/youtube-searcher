@@ -2,10 +2,12 @@ import {
   SET_CURRENT_VIDEO_ID,
   HISTORY_STORAGE_KEY,
   UPDATE_HISTORY_STORAGE,
+  SET_VIDEO_PLAYED,
 } from './constants';
 
 const initialState = {
   currentVideoID: 'eh7lp9umG2I',
+  videoIsPlayed: false,
   history: JSON.parse(localStorage.getItem(HISTORY_STORAGE_KEY)),
 };
 
@@ -15,11 +17,17 @@ const watchReducer = (state = initialState, action) => {
       return {
         ...state,
         currentVideoID: action.payload.videoID,
+        videoIsPlayed: false,
       };
     case UPDATE_HISTORY_STORAGE:
       return {
         ...state,
         history: action.payload.historyState,
+      };
+    case SET_VIDEO_PLAYED:
+      return {
+        ...state,
+        videoIsPlayed: true,
       };
     default:
       return state;

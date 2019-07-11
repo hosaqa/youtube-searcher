@@ -8,7 +8,6 @@ import WatchBoard from './WatchBoard';
 import HistoryBoard from './HistoryBoard';
 
 const Wrapper = styled.div`
-  height: 100vh;
   overflow: hidden;
 `;
 
@@ -20,11 +19,16 @@ const Layout = () => {
           <Box pb={4}>
             <SearchForm />
           </Box>
-          <Grid justify="center" container spacing={2}>
-            <Grid item xs={4}>
+          <Grid
+            direction={'xs-row-reverse'}
+            justify="center"
+            container
+            spacing={2}
+          >
+            <Grid item xs={12} md={5} lg={4}>
               <HistoryBoard />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} md={7} lg={6}>
               <WatchBoard />
             </Grid>
           </Grid>

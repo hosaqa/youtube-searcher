@@ -53,14 +53,14 @@ const SearchForm = ({
 
   return (
     <Grid container justify="center">
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={8} md={6}>
         <ClickAwayListener onClickAway={handleClickAway}>
           <div>
             <form onSubmit={handleSubmit}>
               <FormPaper>
                 <Input
+                  autoComplete="off"
                   id="search-input"
-                  type="search"
                   placeholder="Search"
                   inputProps={{ 'aria-label': 'Search videos' }}
                   value={inputValue}

@@ -7,6 +7,7 @@ const globalStyles = css`
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-color: #f5f5f5;
   }
 
   img {
