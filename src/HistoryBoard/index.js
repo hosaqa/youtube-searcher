@@ -29,16 +29,15 @@ const HistoryBoard = ({ history }) => (
       <List>
         {history && history.length ? (
           history.map((item, index) => (
-            <>
+            <div key={`${item.id}${index}`}>
               <HistoryBoardItem
-                key={`${item.id}${index}`}
                 id={item.id}
                 title={item.title}
                 itemIndex={index}
                 img={item.img}
               />
               {index + 1 !== history.length && <Divider />}
-            </>
+            </div>
           ))
         ) : (
           <Typography variant="body1">You didn`t watch anything</Typography>

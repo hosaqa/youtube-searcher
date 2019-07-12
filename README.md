@@ -1,6 +1,6 @@
 ## Тестовое задание DDA
 
-Посмотреть: [http://bjtestfrontend.zzz.com.ua/](http://bjtestfrontend.zzz.com.ua/)
+Посмотреть: [http://dda-test.zzz.com.ua/](http://dda-test.zzz.com.ua/)
 
 react/redux/emotion/material-ui
 
