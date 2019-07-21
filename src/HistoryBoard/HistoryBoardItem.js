@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withLocalize, Translate } from 'react-localize-redux';
 import styled from '@emotion/styled';
 import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
@@ -34,24 +35,30 @@ const HistoryBoardItem = ({
   <ListItem disableGutters>
     <ItemImage src={img} alt={title} />
     <ItemTitle variant="body2">{title}</ItemTitle>
-    <IconButton
-      aria-label="Watch this video"
-      onClick={() => {
-        setCurrentVideoID(id);
-      }}
-      size="small"
-    >
-      <PlayArrowIcon fontSize="inherit" />
-    </IconButton>
-    <IconButton
-      aria-label="Delete"
-      onClick={() => {
-        deleteItemFromHistory(itemIndex);
-      }}
-      size="small"
-    >
-      <ClearIcon fontSize="inherit" />
-    </IconButton>
+    <Translate>
+      {({ translate }) => (
+        <>
+          <IconButton
+            aria-label={translate('board-item.button-play.aria-label')}
+            onClick={() => {
+              setCurrentVideoID(id);
+            }}
+            size="small"
+          >
+            <PlayArrowIcon fontSize="inherit" />
+          </IconButton>
+          <IconButton
+            aria-label={translate('board-item.button-delete.aria-label')}
+            onClick={() => {
+              deleteItemFromHistory(itemIndex);
+            }}
+            size="small"
+          >
+            <ClearIcon fontSize="inherit" />
+          </IconButton>
+        </>
+      )}
+    </Translate>
   </ListItem>
 );
 
@@ -67,4 +74,4 @@ HistoryBoardItem.propTypes = {
 export default connect(
   null,
   { setCurrentVideoID, deleteItemFromHistory }
-)(HistoryBoardItem);
+)(withLocalize(HistoryBoardItem));

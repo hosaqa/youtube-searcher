@@ -1,29 +1,43 @@
-import React from 'react';
-import Grid from '@material-ui/core/Grid';
+import React, { useEffect } from 'react';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { withLocalize } from 'react-localize-redux';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
-import SearchForm from './SearchForm';
-import WatchBoard from './WatchBoard';
-import HistoryBoard from './HistoryBoard';
+import MainPage from './pages/MainPage';
+import LangsPage from './pages/LangsPage';
+import globalTranslations from './translations/global.json';
 
-const Layout = () => {
+const Layout = withLocalize(({ initialize, activeLanguage }) => {
+  useEffect(() => {
+    initialize({
+      languages: [
+        { name: 'English', code: 'en' },
+        { name: 'Русский', code: 'ru' },
+      ],
+      translation: globalTranslations,
+      options: { renderToStaticMarkup },
+    });
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(
+      'languageCode',
+      activeLanguage ? activeLanguage.code : null
+    );
+  }, [activeLanguage]);
+
   return (
     <Box pt={10} pb={4}>
       <Container>
-        <Box pb={4}>
-          <SearchForm />
-        </Box>
-        <Grid justify="center" container spacing={2}>
-          <Grid item xs={12} md={5} lg={4}>
-            <HistoryBoard />
-          </Grid>
-          <Grid item xs={12} md={7} lg={6}>
-            <WatchBoard />
-          </Grid>
-        </Grid>
+        <Switch>
+          <Route path="/" exact component={MainPage} />
+          <Route path="/langs" component={LangsPage} />
+          <Route render={() => <Redirect to="/" />} />
+        </Switch>
       </Container>
     </Box>
   );
-};
+});
 
 export { Layout };

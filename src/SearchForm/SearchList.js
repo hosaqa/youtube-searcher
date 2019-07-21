@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import unescape from 'unescape';
 import { connect } from 'react-redux';
+import { withLocalize, Translate } from 'react-localize-redux';
+import dayjs from 'dayjs';
 import Paper from '@material-ui/core/Paper';
 import List from '@material-ui/core/List';
 import styled from '@emotion/styled';
@@ -73,7 +75,7 @@ const SearchList = ({
       token: token,
     });
   };
-  
+
   return (
     <Wrapper isVisible={listIsVisible}>
       <ListPaper>
@@ -92,37 +94,51 @@ const SearchList = ({
                       key={item.id.videoId}
                       videoID={item.id.videoId}
                       title={unescape(item.snippet.title)}
-                      subtitle={new Date(
-                        item.snippet.publishedAt
-                      ).toDateString()}
+                      subtitle={dayjs(item.snippet.publishedAt).format(
+                        'DD.MM.YYYY'
+                      )}
                       img={item.snippet.thumbnails.default.url}
                     />
                   );
                 })}
                 <ListItem>
-                  <Pagination>
-                    <IconButton
-                      aria-label="Prev page"
-                      size="small"
-                      disabled={!prevPageToken || videosIsLoading}
-                      onClick={() => handlePagination(prevPageToken)}
-                    >
-                      <ArrowBackIcon fontSize="inherit" />
-                    </IconButton>
-                    <IconButton
-                      aria-label="Next page"
-                      size="small"
-                      disabled={!nextPageToken || videosIsLoading}
-                      onClick={() => handlePagination(nextPageToken)}
-                    >
-                      <ArrowForwardIcon fontSize="inherit" />
-                    </IconButton>
-                  </Pagination>
+                  <Translate>
+                    {({ translate }) => (
+                      <Pagination>
+                        <IconButton
+                          aria-label={translate(
+                            'searchlist.prev-page-button.aria-label'
+                          )}
+                          size="small"
+                          disabled={!prevPageToken || videosIsLoading}
+                          onClick={() => handlePagination(prevPageToken)}
+                        >
+                          <ArrowBackIcon fontSize="inherit" />
+                        </IconButton>
+                        <IconButton
+                          aria-label={translate(
+                            'searchlist.next-page-button.aria-label'
+                          )}
+                          size="small"
+                          disabled={!nextPageToken || videosIsLoading}
+                          onClick={() => handlePagination(nextPageToken)}
+                        >
+                          <ArrowForwardIcon fontSize="inherit" />
+                        </IconButton>
+                      </Pagination>
+                    )}
+                  </Translate>
                 </ListItem>
               </ListWrapper>
             ) : (
               <Box p={2} textAlign="center">
-                <Typography variant="h6">No results found</Typography>
+                <Translate>
+                  {({ translate }) => (
+                    <Typography variant="h6">
+                      {translate('searchlist.no-results')}
+                    </Typography>
+                  )}
+                </Translate>
               </Box>
             )}
           </>
@@ -152,4 +168,4 @@ export default connect(
     nextPageToken: searchReducer.nextPageToken,
   }),
   { fetchVideos }
-)(SearchList);
+)(withLocalize(SearchList));

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withLocalize, Translate } from 'react-localize-redux';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
@@ -44,17 +45,23 @@ const SearchListItem = ({
       <ListItem>
         <ListItemText primary={title} secondary={subtitle} />
         <ItemThumb src={img} alt={title} />
-        <PlayButton
-          onClick={() => handleClick(videoID)}
-          aria-label="Play video"
-          title={
-            currentVideoID === videoID ? 'This video is playing now' : null
-          }
-          size="small"
-          color="secondary"
-        >
-          <PlayArrowIcon />
-        </PlayButton>
+        <Translate>
+          {({ translate }) => (
+            <PlayButton
+              onClick={() => handleClick(videoID)}
+              aria-label={translate('searchlist_item.button.aria-label')}
+              title={
+                currentVideoID === videoID
+                  ? translate('searchlist_item.button.title')
+                  : null
+              }
+              size="small"
+              color="secondary"
+            >
+              <PlayArrowIcon />
+            </PlayButton>
+          )}
+        </Translate>
       </ListItem>
       <Divider />
     </>
@@ -76,4 +83,4 @@ export default connect(
     currentVideoID: watchReducer.currentVideoID,
   }),
   { setCurrentVideoID, setListVisibility }
-)(SearchListItem);
+)(withLocalize(SearchListItem));

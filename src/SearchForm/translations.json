@@ -1,0 +1,26 @@
+{
+  "form": {
+    "input": {
+      "label": ["Search", "Поиск"],
+      "aria-label": ["Enter a query", "Введите запрос"]
+    },
+    "search-button": {
+      "aria-label": ["Begin search videos", "Начать поиск видео"]
+    }
+  },
+  "searchlist": {
+    "prev-page-button": {
+      "aria-label": ["Prev page", "Предыдущая страница"]
+    },
+    "next-page-button": {
+      "aria-label": ["Next page", "Следующая страница"]
+    },
+    "no-results": ["No results found", "Результатов не найдено"]
+  },
+  "searchlist_item": {
+    "button": {
+      "aria-label": ["Play video", "Проиграть видео"],
+      "title": ["This video is playing now", "Это видео воспроизводится сейчас"]
+    }
+  }
+}

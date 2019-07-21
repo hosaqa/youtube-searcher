@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withLocalize, Translate } from 'react-localize-redux';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grid from '@material-ui/core/Grid';
 import InputBase from '@material-ui/core/InputBase';
@@ -10,6 +11,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import styled from '@emotion/styled';
 import SearchList from './SearchList';
 import { fetchVideos, setListVisibility } from './actions';
+import searchTranslations from './translations.json';
 
 const FormPaper = styled(Paper)`
   padding: 6px 12px;
@@ -28,8 +30,11 @@ const SearchForm = ({
   videosIsLoading,
   fetchVideos,
   setListVisibility,
+  addTranslation,
 }) => {
   const [inputValue, setInputValue] = useState('');
+
+  addTranslation(searchTranslations);
 
   const handleClickAway = () => {
     if (!videosIsLoading) {
@@ -58,23 +63,31 @@ const SearchForm = ({
           <div>
             <form onSubmit={handleSubmit}>
               <FormPaper>
-                <Input
-                  autoComplete="off"
-                  id="search-input"
-                  placeholder="Search"
-                  inputProps={{ 'aria-label': 'Search videos' }}
-                  value={inputValue}
-                  onChange={handleChangeInput}
-                  onFocus={handleFocusInput}
-                />
-                <Fab
-                  type="submit"
-                  size="small"
-                  color="primary"
-                  aria-label="Search"
-                >
-                  <SearchIcon />
-                </Fab>
+                <Translate>
+                  {({ translate }) => (
+                    <>
+                      <Input
+                        autoComplete="off"
+                        id="search-input"
+                        placeholder={translate('form.input.label')}
+                        inputProps={{
+                          'aria-label': translate('form.input.aria-label'),
+                        }}
+                        value={inputValue}
+                        onChange={handleChangeInput}
+                        onFocus={handleFocusInput}
+                      />
+                      <Fab
+                        type="submit"
+                        size="small"
+                        color="primary"
+                        aria-label={translate('form.search-button.aria-label')}
+                      >
+                        <SearchIcon />
+                      </Fab>
+                    </>
+                  )}
+                </Translate>
               </FormPaper>
             </form>
             <SearchList />
@@ -90,6 +103,7 @@ SearchForm.propTypes = {
   fetchVideos: PropTypes.func,
   videosIsLoading: PropTypes.bool,
   setListVisibility: PropTypes.func,
+  addTranslation: PropTypes.func,
 };
 
 export default connect(
@@ -98,4 +112,4 @@ export default connect(
     videosIsLoading: searchReducer.videosIsLoading,
   }),
   { fetchVideos, setListVisibility }
-)(SearchForm);
+)(withLocalize(SearchForm));
