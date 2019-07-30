@@ -30,8 +30,8 @@ export const fetchVideosFailure = error => ({
   },
 });
 
-export const fetchVideos = ({ keyword, token }) => {
-  let URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${keyword}&type=video&key=${API_KEY}`;
+export const fetchVideos = ({ keyword, token, limit = 10 }) => {
+  let URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${keyword}&maxResults=${limit}&type=video&key=${API_KEY}`;
   const pageTokenParam = token ? `&pageToken=${token}` : '';
 
   URL = `${URL}${pageTokenParam}`;
@@ -41,6 +41,7 @@ export const fetchVideos = ({ keyword, token }) => {
     return fetch(URL)
       .then(res => res.json())
       .then(data => {
+        console.log(data);
         dispatch(
           fetchVideosSuccess({
             keyword: keyword,

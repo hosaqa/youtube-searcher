@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import unescape from 'unescape';
 import { connect } from 'react-redux';
 import { withLocalize, Translate } from 'react-localize-redux';
-import dayjs from 'dayjs';
 import Paper from '@material-ui/core/Paper';
 import List from '@material-ui/core/List';
 import styled from '@emotion/styled';
@@ -15,13 +14,13 @@ import IconButton from '@material-ui/core/IconButton';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { Transition } from 'react-transition-group';
 import SearchListItem from './SearchListItem';
 import { fetchVideos } from './actions';
 
 const Wrapper = styled.div`
   position: relative;
   width: 100%;
-  visibility: ${({ isVisible }) => (isVisible ? 'visible' : 'hidden')};
 `;
 
 const ListPaper = styled(Paper)`
@@ -36,6 +35,7 @@ const ListPaper = styled(Paper)`
 `;
 
 const ListWrapper = styled(List)`
+  max-height: 600px;
   opacity: ${({ hidden }) => (hidden ? '.2' : '1')};
 `;
 
@@ -59,6 +59,20 @@ const Preloader = styled.div`
   z-index: 2;
 `;
 
+const duration = 300;
+
+const defaultStyle = {
+  transition: `opacity ${duration}ms ease-in-out`,
+  opacity: 0,
+};
+
+const transitionStyles = {
+  entering: { opacity: 1 },
+  entered: { opacity: 1 },
+  exiting: { opacity: 0 },
+  exited: { opacity: 0 },
+};
+
 const SearchList = ({
   listIsVisible,
   keyword,
@@ -78,87 +92,95 @@ const SearchList = ({
   };
 
   return (
-    <Wrapper isVisible={listIsVisible}>
-      <ListPaper>
-        {videosIsLoading && (
-          <Preloader>
-            <CircularProgress />
-          </Preloader>
-        )}
-        {videos && (
-          <>
-            {videos && videos.length ? (
-              <ListWrapper hidden={videosIsLoading}>
-                {videos.map(item => {
-                  return (
-                    <SearchListItem
-                      key={item.id.videoId}
-                      videoID={item.id.videoId}
-                      title={unescape(item.snippet.title)}
-                      subtitle={dayjs(item.snippet.publishedAt).format(
-                        'DD.MM.YYYY'
-                      )}
-                      img={item.snippet.thumbnails.default.url}
-                    />
-                  );
-                })}
-                <ListItem>
-                  <TablePagination
-                    component="nav"
-                    page={0}
-                    rowsPerPage={10}
-                    labelRowsPerPage={null}
-                    rowsPerPageOptions={[]}
-                    count={100}
-                    onChangePage={e => {
-                      console.log(e);
-                    }}
-                  />
-                </ListItem>
-                <ListItem>
-                  <Translate>
-                    {({ translate }) => (
-                      <Pagination>
-                        <IconButton
-                          aria-label={translate(
-                            'searchlist.prev-page-button.aria-label'
+    <Transition in={listIsVisible} timeout={duration}>
+      {state => (
+        <div
+          style={{
+            ...defaultStyle,
+            ...transitionStyles[state],
+          }}
+        >
+          <Wrapper isVisible={listIsVisible}>
+            <ListPaper>
+              {videosIsLoading && (
+                <Preloader>
+                  <CircularProgress />
+                </Preloader>
+              )}
+              {videos && (
+                <>
+                  {videos && videos.length ? (
+                    <ListWrapper hidden={videosIsLoading}>
+                      {videos.map(item => {
+                        return (
+                          <SearchListItem
+                            key={item.id.videoId}
+                            videoID={item.id.videoId}
+                            title={unescape(item.snippet.title)}
+                            subtitle={item.snippet.description}
+                            img={item.snippet.thumbnails.default.url}
+                          />
+                        );
+                      })}
+                      <ListItem>
+                        <TablePagination
+                          component="nav"
+                          page={0}
+                          rowsPerPage={10}
+                          rowsPerPageOptions={[]}
+                          count={100}
+                          onChangePage={e => {
+                            console.log(e);
+                          }}
+                        />
+                      </ListItem>
+                      <ListItem>
+                        <Translate>
+                          {({ translate }) => (
+                            <Pagination>
+                              <IconButton
+                                aria-label={translate(
+                                  'searchlist.prev-page-button.aria-label'
+                                )}
+                                size="small"
+                                disabled={!prevPageToken || videosIsLoading}
+                                onClick={() => handlePagination(prevPageToken)}
+                              >
+                                <ArrowBackIcon fontSize="inherit" />
+                              </IconButton>
+                              <IconButton
+                                aria-label={translate(
+                                  'searchlist.next-page-button.aria-label'
+                                )}
+                                size="small"
+                                disabled={!nextPageToken || videosIsLoading}
+                                onClick={() => handlePagination(nextPageToken)}
+                              >
+                                <ArrowForwardIcon fontSize="inherit" />
+                              </IconButton>
+                            </Pagination>
                           )}
-                          size="small"
-                          disabled={!prevPageToken || videosIsLoading}
-                          onClick={() => handlePagination(prevPageToken)}
-                        >
-                          <ArrowBackIcon fontSize="inherit" />
-                        </IconButton>
-                        <IconButton
-                          aria-label={translate(
-                            'searchlist.next-page-button.aria-label'
-                          )}
-                          size="small"
-                          disabled={!nextPageToken || videosIsLoading}
-                          onClick={() => handlePagination(nextPageToken)}
-                        >
-                          <ArrowForwardIcon fontSize="inherit" />
-                        </IconButton>
-                      </Pagination>
-                    )}
-                  </Translate>
-                </ListItem>
-              </ListWrapper>
-            ) : (
-              <Box p={2} textAlign="center">
-                <Translate>
-                  {({ translate }) => (
-                    <Typography variant="h6">
-                      {translate('searchlist.no-results')}
-                    </Typography>
+                        </Translate>
+                      </ListItem>
+                    </ListWrapper>
+                  ) : (
+                    <Box p={2} textAlign="center">
+                      <Translate>
+                        {({ translate }) => (
+                          <Typography variant="h6">
+                            {translate('searchlist.no-results')}
+                          </Typography>
+                        )}
+                      </Translate>
+                    </Box>
                   )}
-                </Translate>
-              </Box>
-            )}
-          </>
-        )}
-      </ListPaper>
-    </Wrapper>
+                </>
+              )}
+            </ListPaper>
+          </Wrapper>
+        </div>
+      )}
+    </Transition>
   );
 };
 

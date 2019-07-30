@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withLocalize, Translate } from 'react-localize-redux';
+import Typography from '@material-ui/core/Typography';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
@@ -26,6 +27,12 @@ const PlayButton = styled(Fab)`
   margin: 0 0 0 12px;
 `;
 
+const DescriptionText = styled(Typography)`
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+`;
+
 const SearchListItem = ({
   videoID,
   title,
@@ -43,7 +50,15 @@ const SearchListItem = ({
   return (
     <>
       <ListItem>
-        <ListItemText primary={title} secondary={subtitle} />
+        <ListItemText
+          disableTypography
+          primary={<Typography type="subtitle1">{title}</Typography>}
+          secondary={
+            <DescriptionText type="body2" color="textSecondary">
+              {subtitle}
+            </DescriptionText>
+          }
+        />
         <ItemThumb src={img} alt={title} />
         <Translate>
           {({ translate }) => (
