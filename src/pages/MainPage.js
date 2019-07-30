@@ -1,10 +1,18 @@
 import React from 'react';
+import styled from '@emotion/styled';
+import { withStyles } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import SearchForm from '../SearchForm';
 import WatchBoard from '../WatchBoard';
 import HistoryBoard from '../HistoryBoard';
 import LanguageToggle from '../Localization/LanguageToggle';
+
+const HistoryBoardWrapper = styled(Grid)`
+  ${({ theme }) => theme.breakpoints.up('md')} {
+    order: -1;
+  }
+`;
 
 const MainPage = () => (
   <>
@@ -13,14 +21,14 @@ const MainPage = () => (
       <SearchForm />
     </Box>
     <Grid justify="center" container spacing={2}>
-      <Grid item xs={12} md={5} lg={4}>
-        <HistoryBoard />
-      </Grid>
       <Grid item xs={12} md={7} lg={6}>
         <WatchBoard />
       </Grid>
+      <HistoryBoardWrapper item xs={12} md={5} lg={4}>
+        <HistoryBoard />
+      </HistoryBoardWrapper>
     </Grid>
   </>
 );
 
-export default MainPage;
+export default withStyles({})(MainPage);

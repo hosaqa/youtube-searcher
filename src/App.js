@@ -2,17 +2,24 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { LocalizeProvider } from 'react-localize-redux';
-import { Global } from '@emotion/core';
 import { store } from './store';
-import { globalStyles } from './globalStyles';
+import { Global } from '@emotion/core';
+import { ThemeProvider } from '@material-ui/styles';
+import { ThemeProvider as EmotionThemeProvider } from 'emotion-theming';
+import theme from './theme';
+import { globalStyles } from './theme/globalStyles';
 import { Layout } from './Layout';
 
 const App = () => (
   <Provider store={store}>
     <LocalizeProvider>
       <BrowserRouter>
-        <Global styles={globalStyles} />
-        <Layout />
+        <ThemeProvider theme={theme}>
+          <EmotionThemeProvider theme={theme}>
+            <Global styles={globalStyles} />
+            <Layout />
+          </EmotionThemeProvider>
+        </ThemeProvider>
       </BrowserRouter>
     </LocalizeProvider>
   </Provider>

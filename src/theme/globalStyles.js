@@ -1,5 +1,6 @@
 import { css } from '@emotion/core';
 import emotionNormalize from 'emotion-normalize';
+import theme from './index.js';
 
 const globalStyles = css`
   ${emotionNormalize}
@@ -7,7 +8,7 @@ const globalStyles = css`
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: #f5f5f5;
+    background-color: ${theme.palette.background.default};
   }
 
   img {

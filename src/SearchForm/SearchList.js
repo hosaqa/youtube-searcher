@@ -9,6 +9,7 @@ import List from '@material-ui/core/List';
 import styled from '@emotion/styled';
 import ListItem from '@material-ui/core/ListItem';
 import Box from '@material-ui/core/Box';
+import TablePagination from '@material-ui/core/TablePagination';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -101,6 +102,19 @@ const SearchList = ({
                     />
                   );
                 })}
+                <ListItem>
+                  <TablePagination
+                    component="nav"
+                    page={0}
+                    rowsPerPage={10}
+                    labelRowsPerPage={null}
+                    rowsPerPageOptions={[]}
+                    count={100}
+                    onChangePage={e => {
+                      console.log(e);
+                    }}
+                  />
+                </ListItem>
                 <ListItem>
                   <Translate>
                     {({ translate }) => (

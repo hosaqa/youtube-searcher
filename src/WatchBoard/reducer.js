@@ -17,7 +17,8 @@ const watchReducer = (state = initialState, action) => {
       return {
         ...state,
         currentVideoID: action.payload.videoID,
-        videoIsPlayed: false,
+        videoIsPlayed:
+          action.payload.videoID !== state.currentVideoID ? false : true,
       };
     case UPDATE_HISTORY_STORAGE:
       return {

@@ -9,6 +9,7 @@
     "@material-ui/icons": "^4.2.1",
     "dayjs": "^1.8.15",
     "emotion-normalize": "^10.0.0",
+    "emotion-theming": "^10.0.14",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-localize-redux": "^3.5.3",
