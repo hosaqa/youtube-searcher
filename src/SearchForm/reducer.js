@@ -9,9 +9,11 @@ const initialState = {
   keyword: null,
   videos: null,
   videosIsLoading: false,
+  isUpdating: false,
   prevPageToken: null,
   nextPageToken: null,
   listIsVisible: false,
+  error: null,
 };
 
 const searchReducer = (state = initialState, action) => {
@@ -20,13 +22,18 @@ const searchReducer = (state = initialState, action) => {
       return {
         ...state,
         videosIsLoading: true,
+        isUpdating: action.payload.isUpdating,
+        error: null,
       };
     case FETCH_VIDEOS_SUCCESS:
       return {
         ...state,
         keyword: action.payload.keyword,
         videosIsLoading: false,
-        videos: action.payload.items,
+        isUpdating: false,
+        videos: !state.isUpdating
+          ? action.payload.items
+          : state.items.concat(action.payload.items),
         prevPageToken: action.payload.prevPageToken,
         nextPageToken: action.payload.nextPageToken,
       };
@@ -34,7 +41,9 @@ const searchReducer = (state = initialState, action) => {
       return {
         ...state,
         videosIsLoading: false,
+        isUpdating: false,
         videos: [],
+        error: action.payload.error,
       };
     case SET_LIST_VISIBILITY:
       return {

@@ -10,6 +10,15 @@ import Fab from '@material-ui/core/Fab';
 import SearchIcon from '@material-ui/icons/Search';
 import Tooltip from '@material-ui/core/Tooltip';
 import styled from '@emotion/styled';
+
+import ErrorIcon from '@material-ui/icons/Error';
+import InfoIcon from '@material-ui/icons/Info';
+import CloseIcon from '@material-ui/icons/Close';
+import { amber, green } from '@material-ui/core/colors';
+import IconButton from '@material-ui/core/IconButton';
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
+
 import SearchList from './SearchList';
 import { fetchVideos, setListVisibility } from './actions';
 import searchTranslations from './translations.json';
@@ -26,9 +35,24 @@ const Input = styled(InputBase)`
   padding: 0 5px 0 0;
 `;
 
+function MySnackbarContentWrapper(props) {
+  return (
+    <SnackbarContent
+      aria-describedby="client-snackbar"
+      message={<span id="client-snackbar">11111111111111111111111111</span>}
+      action={[
+        <IconButton key="close" aria-label="close" color="inherit">
+          <CloseIcon />
+        </IconButton>,
+      ]}
+    />
+  );
+}
+
 const SearchForm = ({
   videos,
   videosIsLoading,
+  error,
   fetchVideos,
   setListVisibility,
   addTranslation,
@@ -59,6 +83,18 @@ const SearchForm = ({
 
   return (
     <Grid container justify="center">
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        open={true}
+      >
+        <MySnackbarContentWrapper
+          variant="success"
+          message="This is a success message!"
+        />
+      </Snackbar>
       <Grid item xs={12} sm={8} md={6}>
         <ClickAwayListener onClickAway={handleClickAway}>
           <div>
@@ -112,12 +148,14 @@ SearchForm.propTypes = {
   videosIsLoading: PropTypes.bool,
   setListVisibility: PropTypes.func,
   addTranslation: PropTypes.func,
+  error: PropTypes.string,
 };
 
 export default connect(
   ({ searchReducer }) => ({
     videos: searchReducer.videos,
     videosIsLoading: searchReducer.videosIsLoading,
+    error: searchReducer.error,
   }),
   { fetchVideos, setListVisibility }
 )(withLocalize(SearchForm));

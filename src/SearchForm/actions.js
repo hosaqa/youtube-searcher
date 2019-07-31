@@ -1,4 +1,3 @@
-import { store } from '../store';
 import {
   FETCH_VIDEOS_BEGIN,
   FETCH_VIDEOS_SUCCESS,
@@ -6,11 +5,18 @@ import {
   SET_LIST_VISIBILITY,
 } from './constants';
 import { API_KEY } from '../constants';
+import { checkFetchStatus } from '../utils';
 
-export const fetchVideosBegin = () => ({ type: FETCH_VIDEOS_BEGIN });
+export const fetchVideosBegin = isUpdating => ({
+  type: FETCH_VIDEOS_BEGIN,
+  payload: {
+    isUpdating,
+  },
+});
 
 export const fetchVideosSuccess = ({
   keyword,
+  isUpdating,
   items,
   prevPageToken,
   nextPageToken,
@@ -18,6 +24,7 @@ export const fetchVideosSuccess = ({
   type: FETCH_VIDEOS_SUCCESS,
   payload: {
     keyword,
+    isUpdating,
     items,
     prevPageToken,
     nextPageToken,
@@ -36,23 +43,28 @@ export const fetchVideos = ({ keyword, token, update = false, limit = 10 }) => {
   const pageTokenParam = token ? `&pageToken=${token}` : '';
 
   URL = `${URL}${pageTokenParam}`;
+  console.log(URL);
   return dispatch => {
-    dispatch(fetchVideosBegin());
+    dispatch(fetchVideosBegin(update));
     return fetch(URL)
-      .then(res => res.json())
+      .then(response => {
+        if (!response.ok) throw new Error(response.status);
+        else return response.json();
+      })
       .then(data => {
         dispatch(
           fetchVideosSuccess({
             keyword: keyword,
-            items: update
-              ? store.getState().searchReducer.videos.concat(data.items)
-              : data.items,
+            items: data.items,
             prevPageToken: data.prevPageToken,
             nextPageToken: data.nextPageToken,
           })
         );
       })
-      .catch(error => dispatch(fetchVideosFailure(error)));
+      .catch(error => {
+        console.log(error, 'cyka');
+        dispatch(fetchVideosFailure(error));
+      });
   };
 };
 

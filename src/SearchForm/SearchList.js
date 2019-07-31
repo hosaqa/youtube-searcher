@@ -90,6 +90,7 @@ const SearchList = ({
   listIsVisible,
   keyword,
   videosIsLoading,
+  isUpdating,
   videos,
   fetchVideos,
   prevPageToken,
@@ -105,16 +106,12 @@ const SearchList = ({
     });
   };
 
-  const test = () => {
-    console.log('test');
-  };
-
   return (
     <Transition in={listIsVisible} timeout={fadeDuration}>
       {state => (
         <Wrapper style={{ ...transitionStyles[state] }}>
           <ListPaper>
-            {videosIsLoading && (
+            {videosIsLoading && !isUpdating && (
               <Preloader>
                 <CircularProgress />
               </Preloader>
@@ -167,6 +164,7 @@ SearchList.propTypes = {
   listIsVisible: PropTypes.bool,
   keyword: PropTypes.string,
   videosIsLoading: PropTypes.bool,
+  isUpdating: PropTypes.bool,
   videos: PropTypes.arrayOf(PropTypes.object),
   prevPageToken: PropTypes.string,
   nextPageToken: PropTypes.string,
@@ -178,6 +176,7 @@ export default connect(
     listIsVisible: searchReducer.listIsVisible,
     keyword: searchReducer.keyword,
     videosIsLoading: searchReducer.videosIsLoading,
+    isUpdating: searchReducer.isUpdating,
     videos: searchReducer.videos,
     prevPageToken: searchReducer.prevPageToken,
     nextPageToken: searchReducer.nextPageToken,
