@@ -6,7 +6,7 @@ import {
 } from './constants';
 
 const initialState = {
-  currentVideoID: 'eh7lp9umG2I',
+  currentVideoID: 'Kob0G2hE8IY',
   videoIsPlayed: false,
   history: JSON.parse(localStorage.getItem(HISTORY_STORAGE_KEY)),
 };

@@ -8,23 +8,41 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import Fab from '@material-ui/core/Fab';
+import Tooltip from '@material-ui/core/Tooltip';
 import styled from '@emotion/styled';
 import { setCurrentVideoID } from '../WatchBoard/actions';
 import { setListVisibility } from './actions';
 
 const ItemThumb = styled.img`
-  width: 120px;
-  height: 90px;
+  width: 90px;
+  height: 60px;
   margin: 0 12px 0 0;
   display: block;
   order: -1;
   flex-shrink: 0;
+  cursor: pointer;
+
+  ${({ theme }) => theme.breakpoints.up('sm')} {
+    width: 120px;
+    height: 90px;
+  }
 `;
 
 const PlayButton = styled(Fab)`
   flex-shrink: 0;
   order: 1;
   margin: 0 0 0 12px;
+  position: absolute;
+  left: 30px;
+
+  ${({ theme }) => theme.breakpoints.up('sm')} {
+    position: static;
+  }
+`;
+
+const TitleText = styled(Typography)`
+  word-break: break-word;
+  cursor: pointer;
 `;
 
 const DescriptionText = styled(Typography)`
@@ -42,7 +60,7 @@ const SearchListItem = ({
   setCurrentVideoID,
   setListVisibility,
 }) => {
-  const handleClick = videoID => {
+  const handleClickPlay = videoID => {
     setListVisibility(false);
     setCurrentVideoID(videoID);
   };
@@ -52,29 +70,45 @@ const SearchListItem = ({
       <ListItem>
         <ListItemText
           disableTypography
-          primary={<Typography type="subtitle1">{title}</Typography>}
+          primary={
+            <TitleText
+              onClick={() => handleClickPlay(videoID)}
+              type="subtitle1"
+            >
+              {title}
+            </TitleText>
+          }
           secondary={
             <DescriptionText type="body2" color="textSecondary">
               {subtitle}
             </DescriptionText>
           }
         />
-        <ItemThumb src={img} alt={title} />
+        <ItemThumb
+          src={img}
+          alt={title}
+          onClick={() => handleClickPlay(videoID)}
+        />
         <Translate>
           {({ translate }) => (
-            <PlayButton
-              onClick={() => handleClick(videoID)}
-              aria-label={translate('searchlist_item.button.aria-label')}
+            <Tooltip
               title={
                 currentVideoID === videoID
                   ? translate('searchlist_item.button.title')
-                  : null
+                  : ''
               }
-              size="small"
-              color="secondary"
+              enterDelay={500}
+              leaveDelay={200}
             >
-              <PlayArrowIcon />
-            </PlayButton>
+              <PlayButton
+                onClick={() => handleClickPlay(videoID)}
+                aria-label={translate('searchlist_item.button.aria-label')}
+                size="small"
+                color="secondary"
+              >
+                <PlayArrowIcon />
+              </PlayButton>
+            </Tooltip>
           )}
         </Translate>
       </ListItem>

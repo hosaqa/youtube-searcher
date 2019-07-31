@@ -8,6 +8,7 @@ import InputBase from '@material-ui/core/InputBase';
 import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
 import SearchIcon from '@material-ui/icons/Search';
+import Tooltip from '@material-ui/core/Tooltip';
 import styled from '@emotion/styled';
 import SearchList from './SearchList';
 import { fetchVideos, setListVisibility } from './actions';
@@ -77,14 +78,21 @@ const SearchForm = ({
                         onChange={handleChangeInput}
                         onFocus={handleFocusInput}
                       />
-                      <Fab
-                        type="submit"
-                        size="small"
-                        color="primary"
-                        aria-label={translate('form.search-button.aria-label')}
+                      <Tooltip
+                        title={translate('form.search-button-tooltip.title')}
+                        enterDelay={500}
                       >
-                        <SearchIcon />
-                      </Fab>
+                        <Fab
+                          type="submit"
+                          size="small"
+                          color="primary"
+                          aria-label={translate(
+                            'form.search-button.aria-label'
+                          )}
+                        >
+                          <SearchIcon />
+                        </Fab>
+                      </Tooltip>
                     </>
                   )}
                 </Translate>
