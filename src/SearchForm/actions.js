@@ -1,3 +1,4 @@
+import { store } from '../store';
 import {
   FETCH_VIDEOS_BEGIN,
   FETCH_VIDEOS_SUCCESS,
@@ -30,22 +31,22 @@ export const fetchVideosFailure = error => ({
   },
 });
 
-export const fetchVideos = ({ keyword, token, limit = 10 }) => {
+export const fetchVideos = ({ keyword, token, update = false, limit = 10 }) => {
   let URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${keyword}&maxResults=${limit}&type=video&key=${API_KEY}`;
   const pageTokenParam = token ? `&pageToken=${token}` : '';
 
   URL = `${URL}${pageTokenParam}`;
-
   return dispatch => {
     dispatch(fetchVideosBegin());
     return fetch(URL)
       .then(res => res.json())
       .then(data => {
-        console.log(data);
         dispatch(
           fetchVideosSuccess({
             keyword: keyword,
-            items: data.items,
+            items: update
+              ? store.getState().searchReducer.videos.concat(data.items)
+              : data.items,
             prevPageToken: data.prevPageToken,
             nextPageToken: data.nextPageToken,
           })

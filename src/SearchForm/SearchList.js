@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import unescape from 'unescape';
 import { connect } from 'react-redux';
 import { withLocalize, Translate } from 'react-localize-redux';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { Transition } from 'react-transition-group';
 import Paper from '@material-ui/core/Paper';
 import List from '@material-ui/core/List';
@@ -53,17 +54,15 @@ const ListPaper = styled(Paper)`
   position: absolute;
   width: 100%;
   top: 10px;
-  min-height: 80px;
+  /* min-height: 80px;
   max-height: calc(100vh - 300px);
-  overflow: auto;
+  overflow: auto; */
   z-index: 999;
   transition: height 0.2s;
+  padding-bottom: 100px;
 `;
 
-const ListPaperContent = styled.div``;
-
 const ListWrapper = styled(List)`
-  max-height: 600px;
   opacity: ${({ hidden }) => (hidden ? '.2' : '1')};
 `;
 
@@ -102,7 +101,12 @@ const SearchList = ({
     fetchVideos({
       keyword: keyword,
       token: token,
+      update: true,
     });
+  };
+
+  const test = () => {
+    console.log('test');
   };
 
   return (
@@ -110,43 +114,48 @@ const SearchList = ({
       {state => (
         <Wrapper style={{ ...transitionStyles[state] }}>
           <ListPaper>
-            <ListPaperContent>
-              {videosIsLoading && (
-                <Preloader>
-                  <CircularProgress />
-                </Preloader>
-              )}
-              {videos && (
-                <>
-                  {videos && videos.length ? (
-                    <ListWrapper hidden={videosIsLoading}>
-                      {videos.map(item => {
-                        return (
-                          <SearchListItem
-                            key={item.id.videoId}
-                            videoID={item.id.videoId}
-                            title={unescape(item.snippet.title)}
-                            subtitle={item.snippet.description}
-                            img={item.snippet.thumbnails.default.url}
-                          />
-                        );
-                      })}
-                      <ListItem>1</ListItem>
-                    </ListWrapper>
-                  ) : (
-                    <Box p={2} textAlign="center">
-                      <Translate>
-                        {({ translate }) => (
-                          <Typography variant="h6">
-                            {translate('searchlist.no-results')}
-                          </Typography>
-                        )}
-                      </Translate>
-                    </Box>
-                  )}
-                </>
-              )}
-            </ListPaperContent>
+            {videosIsLoading && (
+              <Preloader>
+                <CircularProgress />
+              </Preloader>
+            )}
+            {videos && (
+              <InfiniteScroll
+                dataLength={videos.length}
+                next={() => {
+                  handlePagination(nextPageToken);
+                }}
+                hasMore={true}
+                loader={<h4>Loading...</h4>}
+              >
+                {videos && videos.length ? (
+                  <ListWrapper hidden={videosIsLoading}>
+                    {videos.map(item => {
+                      return (
+                        <SearchListItem
+                          key={item.id.videoId}
+                          videoID={item.id.videoId}
+                          title={unescape(item.snippet.title)}
+                          subtitle={item.snippet.description}
+                          img={item.snippet.thumbnails.default.url}
+                        />
+                      );
+                    })}
+                    <ListItem>1</ListItem>
+                  </ListWrapper>
+                ) : (
+                  <Box p={2} textAlign="center">
+                    <Translate>
+                      {({ translate }) => (
+                        <Typography variant="h6">
+                          {translate('searchlist.no-results')}
+                        </Typography>
+                      )}
+                    </Translate>
+                  </Box>
+                )}
+              </InfiniteScroll>
+            )}
           </ListPaper>
         </Wrapper>
       )}
