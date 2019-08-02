@@ -43,7 +43,6 @@ export const fetchVideos = ({ keyword, token, update = false, limit = 10 }) => {
   const pageTokenParam = token ? `&pageToken=${token}` : '';
 
   URL = `${URL}${pageTokenParam}`;
-  console.log(URL);
   return dispatch => {
     dispatch(fetchVideosBegin(update));
     return fetch(URL)
@@ -62,7 +61,6 @@ export const fetchVideos = ({ keyword, token, update = false, limit = 10 }) => {
         );
       })
       .catch(error => {
-        console.log(error, 'cyka');
         dispatch(fetchVideosFailure(error));
       });
   };

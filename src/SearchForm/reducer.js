@@ -33,7 +33,7 @@ const searchReducer = (state = initialState, action) => {
         isUpdating: false,
         videos: !state.isUpdating
           ? action.payload.items
-          : state.items.concat(action.payload.items),
+          : [...state.videos, ...action.payload.items],
         prevPageToken: action.payload.prevPageToken,
         nextPageToken: action.payload.nextPageToken,
       };

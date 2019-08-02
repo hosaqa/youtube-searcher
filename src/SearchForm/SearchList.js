@@ -99,11 +99,14 @@ const SearchList = ({
   //if (!videosIsLoading && !videos) return false;
 
   const handlePagination = token => {
-    fetchVideos({
-      keyword: keyword,
-      token: token,
-      update: true,
-    });
+    setTimeout(() => {
+      fetchVideos({
+        keyword: keyword,
+        token: token,
+        update: true,
+        limit: 3,
+      });
+    }, 5000);
   };
 
   return (
@@ -116,6 +119,7 @@ const SearchList = ({
                 <CircularProgress />
               </Preloader>
             )}
+
             {videos && (
               <InfiniteScroll
                 dataLength={videos.length}
@@ -127,10 +131,11 @@ const SearchList = ({
               >
                 {videos && videos.length ? (
                   <ListWrapper hidden={videosIsLoading}>
-                    {videos.map(item => {
+                    {videos.map((item, index) => {
+                      console.log(item.id.videoId);
                       return (
                         <SearchListItem
-                          key={item.id.videoId}
+                          key={`${item.id.videoId}${index}`}
                           videoID={item.id.videoId}
                           title={unescape(item.snippet.title)}
                           subtitle={item.snippet.description}
@@ -138,6 +143,7 @@ const SearchList = ({
                         />
                       );
                     })}
+                    {console.log('end')}
                     <ListItem>1</ListItem>
                   </ListWrapper>
                 ) : (
