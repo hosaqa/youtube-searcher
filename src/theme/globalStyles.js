@@ -11,6 +11,11 @@ const globalStyles = css`
     background-color: ${theme.palette.background.default};
   }
 
+  #root {
+    z-index: 10;
+    position: relative;
+  }
+
   img {
     max-width: 100%;
   }

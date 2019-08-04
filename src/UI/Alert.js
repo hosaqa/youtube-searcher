@@ -26,19 +26,36 @@ const getBgColorVariant = (status, theme) => {
   }
 };
 
-const Alert = styled(SnackbarContent)`
+const getIconVariant = status => {
+  switch (status) {
+    case 'info':
+      return <InfoIcon />;
+    case 'success':
+      return <CheckCircleIcon />;
+    case 'warning':
+      return <WarningIcon />;
+    case 'error':
+      return <ErrorIcon />;
+    default:
+      return null;
+  }
+};
+
+const IconWrap = styled.span`
+  margin: ${({ theme }) => theme.spacing(1)}px;
+`;
+
+const Wrapper = styled(SnackbarContent)`
   background-color: ${({ status, theme }) => getBgColorVariant(status, theme)};
 `;
 
-const AlertContent = styled.span`
+const Content = styled.span`
   display: flex;
   align-items: center;
 `;
 
 const Alert = ({ message, status }) => {
-  const handleClick = () => {
-    setOpen(true);
-  };
+  const [open, setOpen] = useState(true);
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -48,29 +65,42 @@ const Alert = ({ message, status }) => {
     setOpen(false);
   };
 
-  const [open, setOpen] = useState(false);
   return (
-    <Alert
-      aria-describedby="client-snackbar"
-      message={
-        <AlertContent>
-          <Icon className={clsx(classes.icon, classes.iconVariant)} />
-          {message}
-        </AlertContent>
-      }
-      action={[
-        <IconButton
-          key="close"
-          aria-label="close"
-          color="inherit"
-          onClick={onClose}
-        >
-          <CloseIcon className={classes.icon} />
-        </IconButton>,
-      ]}
-      {...other}
-    />
+    <Snackbar
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'left',
+      }}
+      autoHideDuration={6000}
+      open={open}
+    >
+      <Wrapper
+        status={status}
+        aria-describedby="client-snackbar"
+        message={
+          <Content>
+            <IconWrap>{getIconVariant(status)}</IconWrap>
+            {message}
+          </Content>
+        }
+        action={[
+          <IconButton
+            key="close"
+            aria-label="close"
+            color="inherit"
+            onClick={handleClose}
+          >
+            <CloseIcon />
+          </IconButton>,
+        ]}
+      />
+    </Snackbar>
   );
+};
+
+Alert.propTypes = {
+  message: PropTypes.string,
+  status: PropTypes.string,
 };
 
 export { Alert };

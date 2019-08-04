@@ -23,6 +23,8 @@ const searchReducer = (state = initialState, action) => {
         ...state,
         videosIsLoading: true,
         isUpdating: action.payload.isUpdating,
+        videos: action.payload.isUpdating ? state.videos : null,
+        listIsVisible: true,
         error: null,
       };
     case FETCH_VIDEOS_SUCCESS:
@@ -43,6 +45,7 @@ const searchReducer = (state = initialState, action) => {
         videosIsLoading: false,
         isUpdating: false,
         videos: [],
+        listIsVisible: false,
         error: action.payload.error,
       };
     case SET_LIST_VISIBILITY:

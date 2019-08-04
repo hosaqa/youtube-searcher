@@ -34,6 +34,7 @@ export const addToHistoryStorage = videoID => {
       id: videoID,
       title: videoItem.snippet.title,
       img: videoItem.snippet.thumbnails.default.url,
+      date: new Date().toDateString(),
     };
 
     if (historyArr.length === 5) historyArr.pop();

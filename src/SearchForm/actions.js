@@ -39,21 +39,28 @@ export const fetchVideosFailure = error => ({
 });
 
 export const fetchVideos = ({ keyword, token, update = false, limit = 10 }) => {
-  let URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${keyword}&maxResults=${limit}&type=video&key=${API_KEY}`;
+  const formattedKeyword = keyword.split(' ').join('+');
+
+  let URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${formattedKeyword}&maxResults=${limit}&type=video&key=${API_KEY}`;
   const pageTokenParam = token ? `&pageToken=${token}` : '';
 
   URL = `${URL}${pageTokenParam}`;
+
   return dispatch => {
     dispatch(fetchVideosBegin(update));
+
     return fetch(URL)
       .then(response => {
-        if (!response.ok) throw new Error(response.status);
-        else return response.json();
+        if (!response.ok) {
+          throw response.status;
+        }
+
+        return response.json();
       })
       .then(data => {
         dispatch(
           fetchVideosSuccess({
-            keyword: keyword,
+            keyword: formattedKeyword,
             items: data.items,
             prevPageToken: data.prevPageToken,
             nextPageToken: data.nextPageToken,
@@ -61,7 +68,7 @@ export const fetchVideos = ({ keyword, token, update = false, limit = 10 }) => {
         );
       })
       .catch(error => {
-        dispatch(fetchVideosFailure(error));
+        dispatch(fetchVideosFailure(`Error: ${error}`));
       });
   };
 };

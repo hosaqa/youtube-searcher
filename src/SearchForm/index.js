@@ -10,16 +10,8 @@ import Fab from '@material-ui/core/Fab';
 import SearchIcon from '@material-ui/icons/Search';
 import Tooltip from '@material-ui/core/Tooltip';
 import styled from '@emotion/styled';
-
-import ErrorIcon from '@material-ui/icons/Error';
-import InfoIcon from '@material-ui/icons/Info';
-import CloseIcon from '@material-ui/icons/Close';
-import { amber, green } from '@material-ui/core/colors';
-import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
-
 import SearchList from './SearchList';
+import { Alert } from '../UI/Alert';
 import { fetchVideos, setListVisibility } from './actions';
 import searchTranslations from './translations.json';
 
@@ -34,20 +26,6 @@ const Input = styled(InputBase)`
   flex-grow: 1;
   padding: 0 5px 0 0;
 `;
-
-function MySnackbarContentWrapper(props) {
-  return (
-    <SnackbarContent
-      aria-describedby="client-snackbar"
-      message={<span id="client-snackbar">11111111111111111111111111</span>}
-      action={[
-        <IconButton key="close" aria-label="close" color="inherit">
-          <CloseIcon />
-        </IconButton>,
-      ]}
-    />
-  );
-}
 
 const SearchForm = ({
   videos,
@@ -66,10 +44,11 @@ const SearchForm = ({
       setListVisibility(false);
     }
   };
+
   const handleChangeInput = e => setInputValue(e.target.value);
 
   const handleFocusInput = () => {
-    if (videos) setListVisibility(true);
+    if (videos && videos.length) setListVisibility(true);
   };
 
   const handleSubmit = e => {
@@ -77,25 +56,13 @@ const SearchForm = ({
 
     if (!inputValue) return false;
 
-    setListVisibility(true);
-    fetchVideos({ keyword: inputValue.split(' ').join('+') });
+    fetchVideos({ keyword: inputValue });
   };
 
   return (
     <Grid container justify="center">
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        open={true}
-      >
-        <MySnackbarContentWrapper
-          variant="success"
-          message="This is a success message!"
-        />
-      </Snackbar>
       <Grid item xs={12} sm={8} md={6}>
+        {error && <Alert message={error} status="error" />}
         <ClickAwayListener onClickAway={handleClickAway}>
           <div>
             <form onSubmit={handleSubmit}>

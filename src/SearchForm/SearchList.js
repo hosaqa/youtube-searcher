@@ -8,13 +8,8 @@ import { Transition } from 'react-transition-group';
 import Paper from '@material-ui/core/Paper';
 import List from '@material-ui/core/List';
 import styled from '@emotion/styled';
-import ListItem from '@material-ui/core/ListItem';
 import Box from '@material-ui/core/Box';
-import TablePagination from '@material-ui/core/TablePagination';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import SearchListItem from './SearchListItem';
 import { fetchVideos } from './actions';
@@ -23,18 +18,22 @@ const fadeDuration = 200;
 
 const transitionStyles = {
   entering: {
+    visibility: 'hidden',
     opacity: 0,
     transform: 'scale(0.95)',
   },
   entered: {
+    visibility: 'visible',
     opacity: 1,
     transform: 'scale(1)',
   },
   exiting: {
+    visibility: 'visible',
     opacity: 1,
     transform: 'scale(1)',
   },
   exited: {
+    visibility: 'hidden',
     opacity: 0,
     transform: 'scale(0.95)',
   },
@@ -45,7 +44,7 @@ const Wrapper = styled.div`
   z-index: 2000;
   width: 100%;
   transition: opacity ${fadeDuration}ms ease-in-out,
-    transform ${fadeDuration}ms linear;
+    transform ${fadeDuration}ms linear, visibility ${fadeDuration}ms linear;
   opacity: 0;
   transform-origin: center top;
 `;
@@ -54,36 +53,27 @@ const ListPaper = styled(Paper)`
   position: absolute;
   width: 100%;
   top: 10px;
-  /* min-height: 80px;
-  max-height: calc(100vh - 300px);
-  overflow: auto; */
-  z-index: 999;
+  z-index: 50;
   transition: height 0.2s;
-  padding-bottom: 100px;
 `;
 
-const ListWrapper = styled(List)`
-  opacity: ${({ hidden }) => (hidden ? '.2' : '1')};
-`;
-
-const Pagination = styled.div`
+const MainPreloaderPlace = styled.div`
+  height: 80px;
   width: 100%;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const Preloader = styled.div`
-  height: 80px;
-  width: 80px;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  display: inline-flex;
   align-items: center;
   justify-content: center;
   z-index: 2;
+`;
+
+const SecondaryPreloaderPlace = styled.div`
+  padding: 0 0 10px;
+  height: 50px;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 `;
 
 const SearchList = ({
@@ -93,20 +83,16 @@ const SearchList = ({
   isUpdating,
   videos,
   fetchVideos,
-  prevPageToken,
   nextPageToken,
+  error,
 }) => {
-  //if (!videosIsLoading && !videos) return false;
-
-  const handlePagination = token => {
-    setTimeout(() => {
-      fetchVideos({
-        keyword: keyword,
-        token: token,
-        update: true,
-        limit: 3,
-      });
-    }, 5000);
+  const loadMoreVideos = () => {
+    fetchVideos({
+      keyword: keyword,
+      token: nextPageToken,
+      update: true,
+      limit: 5,
+    });
   };
 
   return (
@@ -115,37 +101,38 @@ const SearchList = ({
         <Wrapper style={{ ...transitionStyles[state] }}>
           <ListPaper>
             {videosIsLoading && !isUpdating && (
-              <Preloader>
+              <MainPreloaderPlace>
                 <CircularProgress />
-              </Preloader>
+              </MainPreloaderPlace>
             )}
 
-            {videos && (
+            {videos && !error && (
               <InfiniteScroll
                 dataLength={videos.length}
-                next={() => {
-                  handlePagination(nextPageToken);
-                }}
+                next={loadMoreVideos}
                 hasMore={true}
-                loader={<h4>Loading...</h4>}
+                height={videos.length ? 400 : 'auto'}
+                loader={
+                  videosIsLoading &&
+                  isUpdating && (
+                    <SecondaryPreloaderPlace>
+                      <CircularProgress size={30} />
+                    </SecondaryPreloaderPlace>
+                  )
+                }
               >
                 {videos && videos.length ? (
-                  <ListWrapper hidden={videosIsLoading}>
-                    {videos.map((item, index) => {
-                      console.log(item.id.videoId);
-                      return (
-                        <SearchListItem
-                          key={`${item.id.videoId}${index}`}
-                          videoID={item.id.videoId}
-                          title={unescape(item.snippet.title)}
-                          subtitle={item.snippet.description}
-                          img={item.snippet.thumbnails.default.url}
-                        />
-                      );
-                    })}
-                    {console.log('end')}
-                    <ListItem>1</ListItem>
-                  </ListWrapper>
+                  <List>
+                    {videos.map((item, index) => (
+                      <SearchListItem
+                        key={`${item.id.videoId}${index}`}
+                        videoID={item.id.videoId}
+                        title={unescape(item.snippet.title)}
+                        subtitle={item.snippet.description}
+                        img={item.snippet.thumbnails.default.url}
+                      />
+                    ))}
+                  </List>
                 ) : (
                   <Box p={2} textAlign="center">
                     <Translate>
@@ -172,8 +159,8 @@ SearchList.propTypes = {
   videosIsLoading: PropTypes.bool,
   isUpdating: PropTypes.bool,
   videos: PropTypes.arrayOf(PropTypes.object),
-  prevPageToken: PropTypes.string,
   nextPageToken: PropTypes.string,
+  error: PropTypes.string,
   fetchVideos: PropTypes.func,
 };
 
@@ -184,8 +171,8 @@ export default connect(
     videosIsLoading: searchReducer.videosIsLoading,
     isUpdating: searchReducer.isUpdating,
     videos: searchReducer.videos,
-    prevPageToken: searchReducer.prevPageToken,
     nextPageToken: searchReducer.nextPageToken,
+    error: searchReducer.error,
   }),
   { fetchVideos }
 )(withLocalize(SearchList));

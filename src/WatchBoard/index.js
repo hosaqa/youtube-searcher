@@ -5,11 +5,12 @@ import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import styled from '@emotion/styled';
 import YouTube from 'react-youtube';
+import { useWindowWidth } from '../hooks/useWindowWidth';
 import { setVideoPlayed, addToHistoryStorage } from './actions';
 
 const Wrapper = styled(Paper)`
   width: 100%;
-  min-height: 425px;
+  min-height: ${({ height }) => height + 25}px;
   display: flex;
   flex-direction: column;
 `;
@@ -26,15 +27,8 @@ const PlayerSkeleton = styled(Box)`
   flex-grow: 1;
   width: 100%;
   height: 100%;
+  background-color: ${({ theme }) => theme.palette.grey[200]};
 `;
-
-const opts = {
-  height: '390',
-  width: '100%',
-  playerVars: {
-    autoplay: 0,
-  },
-};
 
 const WatchBoard = ({
   videoIsPlayed,
@@ -42,6 +36,8 @@ const WatchBoard = ({
   setVideoPlayed,
   addToHistoryStorage,
 }) => {
+  const windowWidth = useWindowWidth();
+
   const handlePlay = () => {
     setVideoPlayed();
 
@@ -50,13 +46,30 @@ const WatchBoard = ({
     }
   };
 
+  const getPlayerHeight = () => {
+    const GOLDEN_RATIO = 1.61803398875;
+    const height = windowWidth / GOLDEN_RATIO;
+
+    return Math.min(height, 400);
+  };
+
+  const playerHeight = getPlayerHeight();
+
+  const opts = {
+    height: playerHeight,
+    width: '100%',
+    playerVars: {
+      autoplay: 0,
+    },
+  };
+
   return (
-    <Wrapper>
+    <Wrapper height={playerHeight}>
       <Content p={2}>
         {currentVideoID ? (
           <YouTube videoId={currentVideoID} opts={opts} onPlay={handlePlay} />
         ) : (
-          <PlayerSkeleton bgcolor="#efefef" borderRadius={4}></PlayerSkeleton>
+          <PlayerSkeleton borderRadius={4}></PlayerSkeleton>
         )}
       </Content>
     </Wrapper>

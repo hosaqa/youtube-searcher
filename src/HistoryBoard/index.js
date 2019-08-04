@@ -42,6 +42,7 @@ const HistoryBoard = ({ history, addTranslation }) => {
                       title={item.title}
                       itemIndex={index}
                       img={item.img}
+                      date={item.date}
                     />
                     {index + 1 !== history.length && <Divider />}
                   </div>
