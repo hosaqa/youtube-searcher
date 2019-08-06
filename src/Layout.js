@@ -6,7 +6,6 @@ import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import MainPage from './pages/MainPage';
 import LangsPage from './pages/LangsPage';
-import globalTranslations from './translations/global.json';
 
 const Layout = withLocalize(({ initialize, activeLanguage }) => {
   useEffect(() => {
@@ -15,7 +14,6 @@ const Layout = withLocalize(({ initialize, activeLanguage }) => {
         { name: 'English', code: 'en' },
         { name: 'Русский', code: 'ru' },
       ],
-      translation: globalTranslations,
       options: { renderToStaticMarkup },
     });
   }, []);

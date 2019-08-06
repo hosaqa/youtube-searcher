@@ -1,5 +1,0 @@
-{
-  "input_label": ["Search", "Поиск"],
-  "input_aria-label": ["Enter a query", "Введите запрос"],
-  "search-button_aria-label": ["Begin search videos", "Начать поиск видео"]
-}

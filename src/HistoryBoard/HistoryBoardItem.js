@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import ClearIcon from '@material-ui/icons/Clear';
+import Tooltip from '@material-ui/core/Tooltip';
 import dayjs from 'dayjs';
 import {
   setCurrentVideoID,
@@ -43,24 +44,35 @@ const HistoryBoardItem = ({
     <Translate>
       {({ translate }) => (
         <>
-          <IconButton
-            aria-label={translate('board-item.button-play.aria-label')}
-            onClick={() => {
-              setCurrentVideoID(id);
-            }}
-            size="small"
+          <Tooltip
+            title={translate('board-item.button-play.aria-label')}
+            enterDelay={500}
           >
-            <PlayArrowIcon fontSize="inherit" />
-          </IconButton>
-          <IconButton
-            aria-label={translate('board-item.button-delete.aria-label')}
-            onClick={() => {
-              deleteItemFromHistory(itemIndex);
-            }}
-            size="small"
+            <IconButton
+              aria-label={translate('board-item.button-play.aria-label')}
+              onClick={() => {
+                setCurrentVideoID(id);
+              }}
+              size="small"
+              s
+            >
+              <PlayArrowIcon fontSize="inherit" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip
+            title={translate('board-item.button-delete.aria-label')}
+            enterDelay={500}
           >
-            <ClearIcon fontSize="inherit" />
-          </IconButton>
+            <IconButton
+              aria-label={translate('board-item.button-delete.aria-label')}
+              onClick={() => {
+                deleteItemFromHistory(itemIndex);
+              }}
+              size="small"
+            >
+              <ClearIcon fontSize="inherit" />
+            </IconButton>
+          </Tooltip>
         </>
       )}
     </Translate>

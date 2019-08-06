@@ -7,5 +7,5 @@ const theme = createMuiTheme({
     secondary: deepOrange,
   },
 });
-
+console.log(theme.spacing(2));
 export default theme;
