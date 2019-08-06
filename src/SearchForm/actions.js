@@ -50,13 +50,7 @@ export const fetchVideos = ({ keyword, token, update = false, limit = 10 }) => {
     dispatch(fetchVideosBegin(update));
 
     return fetch(URL)
-      .then(response => {
-        if (!response.ok) {
-          throw response.status;
-        }
-
-        return response.json();
-      })
+      .then(checkFetchStatus)
       .then(data => {
         dispatch(
           fetchVideosSuccess({

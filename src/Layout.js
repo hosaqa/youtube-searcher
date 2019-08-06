@@ -26,7 +26,7 @@ const Layout = withLocalize(({ initialize, activeLanguage }) => {
   }, [activeLanguage]);
 
   return (
-    <Box pt={10} pb={4}>
+    <Box pt={{ xs: 4, sm: 12 }} pb={4}>
       <Container>
         <Switch>
           <Route path="/" exact component={MainPage} />

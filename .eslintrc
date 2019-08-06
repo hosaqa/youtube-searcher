@@ -1,12 +1,13 @@
 {
   "extends": ["eslint:recommended", "plugin:react/recommended"],
   "rules": {
-    "jsx-quotes": [1, "prefer-double"]
+    "jsx-quotes": [1, "prefer-double"],
+    "react-hooks/exhaustive-deps": "off"
   },
   "env": {
     "browser": true,
     "node": true
   },
   "parser": "babel-eslint",
-  "plugins": ["prettier"]
+  "plugins": ["prettier", "react-hooks"]
 }

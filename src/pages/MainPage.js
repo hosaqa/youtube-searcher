@@ -15,8 +15,10 @@ const HistoryBoardWrapper = styled(Grid)`
 `;
 
 const LanguageBlock = styled.div`
-  ${({ theme }) => theme.breakpoints.up('md')} {
-    position: fixed;
+  margin-bottom: ${({ theme }) => theme.spacing(2)}px;
+
+  ${({ theme }) => theme.breakpoints.up('sm')} {
+    position: absolute;
     z-index: 400;
     top: 25px;
     right: 25px;
@@ -28,7 +30,7 @@ const MainPage = () => (
     <LanguageBlock>
       <LanguageToggle />
     </LanguageBlock>
-    <Box pb={4}>
+    <Box pb={{ xs: 2, md: 4 }}>
       <SearchForm />
     </Box>
     <Grid justify="center" container spacing={2}>

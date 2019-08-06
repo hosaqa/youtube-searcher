@@ -54,7 +54,6 @@ const HistoryBoardItem = ({
                 setCurrentVideoID(id);
               }}
               size="small"
-              s
             >
               <PlayArrowIcon fontSize="inherit" />
             </IconButton>
