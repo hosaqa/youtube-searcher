@@ -8,7 +8,7 @@ import {
 const initialState = {
   currentVideoID: 'Kob0G2hE8IY',
   videoIsPlayed: false,
-  history: JSON.parse(localStorage.getItem(HISTORY_STORAGE_KEY)),
+  history: [],
 };
 
 const watchReducer = (state = initialState, action) => {

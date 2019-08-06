@@ -21,6 +21,8 @@
     "react-transition-group": "^4.2.1",
     "react-youtube": "^7.9.0",
     "redux": "^4.0.1",
+    "redux-localstorage-simple": "^2.1.6",
+    "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
     "unescape": "^1.0.1"
   },
