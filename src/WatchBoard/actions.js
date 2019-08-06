@@ -3,6 +3,7 @@ import {
   SET_VIDEO_PLAYED,
   UPDATE_HISTORY_STORAGE,
   HISTORY_STORAGE_KEY,
+  ADD_TO_HISTORY_STORAGE,
 } from './constants';
 import { API_KEY } from '../constants';
 import { isArray } from '../utils';
@@ -26,31 +27,39 @@ export const updateHistory = historyState => ({
 });
 
 export const addToHistoryStorage = videoID => {
-  const getUpdatedHistory = videoItem => {
-    let historyArr = JSON.parse(localStorage.getItem(HISTORY_STORAGE_KEY));
-    historyArr = isArray(historyArr) ? historyArr : [];
+  // const getUpdatedHistory = videoItem => {
+  //   let historyArr = JSON.parse(localStorage.getItem(HISTORY_STORAGE_KEY));
+  //   historyArr = isArray(historyArr) ? historyArr : [];
 
-    const newItem = {
-      id: videoID,
-      title: videoItem.snippet.title,
-      img: videoItem.snippet.thumbnails.default.url,
-      date: new Date().toDateString(),
+  //   const newItem = {
+  //     id: videoID,
+  //     title: videoItem.snippet.title,
+  //     img: videoItem.snippet.thumbnails.default.url,
+  //     date: new Date().toDateString(),
+  //   };
+
+  //   if (historyArr.length === 5) historyArr.pop();
+
+  //   historyArr.unshift(newItem);
+
+  //   localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(historyArr));
+
+  //   return historyArr;
+  // };
+
+  return fetchVideoByID(videoID).then(videoItem => {
+    return {
+      type: ADD_TO_HISTORY_STORAGE,
+      payload: {
+        videoItem: {
+          id: videoID,
+          title: videoItem.snippet.title,
+          img: videoItem.snippet.thumbnails.default.url,
+          date: new Date().toDateString(),
+        },
+      },
     };
-
-    if (historyArr.length === 5) historyArr.pop();
-
-    historyArr.unshift(newItem);
-
-    localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(historyArr));
-
-    return historyArr;
-  };
-
-  return dispatch => {
-    fetchVideoByID(videoID).then(videoItem => {
-      dispatch(updateHistory(getUpdatedHistory(videoItem)));
-    });
-  };
+  });
 };
 
 export const deleteItemFromHistory = index => {

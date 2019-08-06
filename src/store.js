@@ -9,13 +9,13 @@ import { watchReducer } from './WatchBoard/reducer';
 const rootPersistConfig = {
   key: 'root',
   storage: storage,
-  blacklist: ['watch'],
+  blacklist: ['watchReducer'],
 };
 
 const watchPersistConfig = {
   key: 'watch',
   storage: storage,
-  blacklist: ['somethingTemporary'],
+  blacklist: ['videoIsPlayed', 'currentVideoID'],
 };
 
 const rootReducer = combineReducers({
