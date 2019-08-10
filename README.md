@@ -1,6 +1,4 @@
-## Тестовое задание DDA
-
-Посмотреть: [http://dda-test.zzz.com.ua/](http://dda-test.zzz.com.ua/)
+## Youtube Searcher React App
 
 react/redux/emotion/material-ui
 
