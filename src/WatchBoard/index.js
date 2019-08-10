@@ -5,12 +5,12 @@ import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import styled from '@emotion/styled';
 import YouTube from 'react-youtube';
-import { useWindowWidth } from '../hooks/useWindowWidth';
-import { setVideoPlayed, addToHistoryStorage } from './actions';
+import { useWindowWidth } from '../app/hooks/useWindowWidth';
+import { setVideoPlayed, updateHistoryStorage } from './actions';
 
 const Wrapper = styled(Paper)`
   width: 100%;
-  min-height: ${({ height }) => height + 25}px;
+  min-height: ${({ height }) => height + 15}px;
   display: flex;
   flex-direction: column;
 `;
@@ -34,7 +34,7 @@ const WatchBoard = ({
   videoIsPlayed,
   currentVideoID,
   setVideoPlayed,
-  addToHistoryStorage,
+  updateHistoryStorage,
 }) => {
   const windowWidth = useWindowWidth();
 
@@ -42,7 +42,7 @@ const WatchBoard = ({
     setVideoPlayed();
 
     if (!videoIsPlayed) {
-      addToHistoryStorage(currentVideoID);
+      updateHistoryStorage(currentVideoID);
     }
   };
 
@@ -65,7 +65,7 @@ const WatchBoard = ({
 
   return (
     <Wrapper height={playerHeight}>
-      <Content p={2}>
+      <Content p={{ xs: 1, sm: 2 }}>
         {currentVideoID ? (
           <YouTube videoId={currentVideoID} opts={opts} onPlay={handlePlay} />
         ) : (
@@ -79,7 +79,7 @@ const WatchBoard = ({
 WatchBoard.propTypes = {
   currentVideoID: PropTypes.string,
   videoIsPlayed: PropTypes.bool,
-  addToHistoryStorage: PropTypes.func,
+  updateHistoryStorage: PropTypes.func,
   setVideoPlayed: PropTypes.func,
 };
 
@@ -88,5 +88,5 @@ export default connect(
     currentVideoID: watchReducer.currentVideoID,
     videoIsPlayed: watchReducer.videoIsPlayed,
   }),
-  { setVideoPlayed, addToHistoryStorage }
+  { setVideoPlayed, updateHistoryStorage }
 )(WatchBoard);

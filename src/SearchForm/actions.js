@@ -1,11 +1,10 @@
+import { fetchVideosAPI } from '../app/web-api';
 import {
   FETCH_VIDEOS_BEGIN,
   FETCH_VIDEOS_SUCCESS,
   FETCH_VIDEOS_FAILURE,
   SET_LIST_VISIBILITY,
 } from './constants';
-import { API_KEY } from '../constants';
-import { checkFetchStatus } from '../utils';
 
 export const fetchVideosBegin = isUpdating => ({
   type: FETCH_VIDEOS_BEGIN,
@@ -41,16 +40,10 @@ export const fetchVideosFailure = error => ({
 export const fetchVideos = ({ keyword, token, update = false, limit = 10 }) => {
   const formattedKeyword = keyword.split(' ').join('+');
 
-  let URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${formattedKeyword}&maxResults=${limit}&type=video&key=${API_KEY}`;
-  const pageTokenParam = token ? `&pageToken=${token}` : '';
-
-  URL = `${URL}${pageTokenParam}`;
-
   return dispatch => {
     dispatch(fetchVideosBegin(update));
 
-    return fetch(URL)
-      .then(checkFetchStatus)
+    return fetchVideosAPI({ keyword, token, limit })
       .then(data => {
         dispatch(
           fetchVideosSuccess({

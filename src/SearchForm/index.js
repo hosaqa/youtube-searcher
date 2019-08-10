@@ -11,7 +11,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import Tooltip from '@material-ui/core/Tooltip';
 import styled from '@emotion/styled';
 import SearchList from './SearchList';
-import { Alert } from '../UI/Alert';
+import { Alert } from '../app/UI/Alert';
 import { fetchVideos, setListVisibility } from './actions';
 import searchTranslations from './translations.json';
 
