@@ -1,6 +1,16 @@
-## Youtube Searcher React App
+## Youtube Searcher
 
-react/redux/emotion/material-ui
+Стек: react/redux/emotion/material-ui
+
+Ссылка на приложение в миру: https://youtube-searcher-app.herokuapp.com/
+
+## Фичи
+
+1. Поиск с автоподгружением новых видео и бесконечным скроллом
+2. Iframe ютуб плейера
+2. Локализация
+3. История просмотров (сохраняет посление 5 просмотренных видео)
+4. Синхронизация текущего просматриваемого видео, текущего языка и истории просмотров с localstorage
 
 ## Как развенуть
 
