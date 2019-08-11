@@ -1,0 +1,23 @@
+{
+  "form": {
+    "input": {
+      "label": ["Search", "Поиск"],
+      "aria-label": ["Enter a query", "Введите запрос"]
+    },
+    "search-button": {
+      "aria-label": ["Begin search videos", "Начать поиск видео"]
+    },
+    "search-button-tooltip": {
+      "title": ["Enter a query", "Введите запрос"]
+    }
+  },
+  "searchlist": {
+    "no-results": ["No results found", "Результатов не найдено"]
+  },
+  "searchlist_item": {
+    "button": {
+      "aria-label": ["Play video", "Проиграть видео"],
+      "title": ["This video is playing now", "Это видео воспроизводится сейчас"]
+    }
+  }
+}
