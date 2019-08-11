@@ -1,8 +1,0 @@
-{
-  "select": {
-    "label": ["Language", "Язык"]
-  },
-  "radio-buttons": {
-    "label": ["Choose language", "Выберите язык"]
-  }
-}
