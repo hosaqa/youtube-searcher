@@ -39,20 +39,23 @@ const SocLinksBlock = styled.section`
 
 const Layout = withLocalize(({ initialize, activeLanguage }) => {
   useEffect(() => {
+    const languages = [
+      { name: 'English', code: 'en' },
+      { name: 'Русский', code: 'ru' },
+    ];
+    const defaultLanguage =
+      localStorage.getItem('languageCode') || languages[0].code;
+
     initialize({
-      languages: [
-        { name: 'English', code: 'en' },
-        { name: 'Русский', code: 'ru' },
-      ],
-      options: { renderToStaticMarkup },
+      languages,
+      options: { renderToStaticMarkup, defaultLanguage },
     });
   }, []);
 
   useEffect(() => {
-    localStorage.setItem(
-      'languageCode',
-      activeLanguage ? activeLanguage.code : null
-    );
+    if (activeLanguage) {
+      localStorage.setItem('languageCode', activeLanguage.code);
+    }
   }, [activeLanguage]);
 
   return (
