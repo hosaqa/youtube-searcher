@@ -1,6 +1,7 @@
 ## Youtube Searcher
 
 Стек: react/redux/emotion/material-ui
+Ссылка на приложение в миру: https://youtube-searcher-app.herokuapp.com/
 
 ## Фичи
 
