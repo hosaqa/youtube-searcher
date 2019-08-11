@@ -22,14 +22,14 @@ const SocLinks = () => (
       rel="nofollow noopener noreferrer"
       target="_blank"
     >
-      <img src={githubIcon} alt="github" width="25" height="25" />
+      <img src={facebookIcon} alt="facebook" width="25" height="25" />
     </Icon>
     <Icon
       href="https://github.com/xhosaka/flow"
       rel="nofollow noopener noreferrer"
       target="_blank"
     >
-      <img src={facebookIcon} alt="facebook" width="25" height="25" />
+      <img src={githubIcon} alt="github" width="25" height="25" />
     </Icon>
     <Icon
       href="https://t.me/qwertyxz"
