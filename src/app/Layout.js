@@ -33,7 +33,7 @@ const SocLinksBlock = styled.section`
   margin: ${({ theme }) => theme.spacing(2)}px auto 0;
 
   ${({ theme }) => theme.breakpoints.up('sm')} {
-    margin: ${({ theme }) => theme.spacing(4)}px auto 0;
+    margin: ${({ theme }) => theme.spacing(5)}px auto 0;
   }
 `;
 
