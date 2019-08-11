@@ -1,3 +1,3 @@
-const API_KEY = 'AIzaSyCkTjcDo3C_ElyFdhaLqdih7zVPfEWx7-c';
+const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY;
 
 export { API_KEY };

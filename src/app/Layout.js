@@ -30,7 +30,7 @@ const LanguageBlock = styled.div`
 
 const SocLinksBlock = styled.section`
   text-align: center;
-  margin: ${({ theme }) => theme.spacing(2)}px auto 0;
+  margin: ${({ theme }) => theme.spacing(3)}px auto 0;
 
   ${({ theme }) => theme.breakpoints.up('sm')} {
     margin: ${({ theme }) => theme.spacing(5)}px auto 0;
