@@ -25,7 +25,7 @@ const SocLinks = () => (
       <img src={facebookIcon} alt="facebook" width="25" height="25" />
     </Icon>
     <Icon
-      href="https://github.com/xhosaka/flow"
+      href="https://github.com/xhosaka/youtube-searcher"
       rel="nofollow noopener noreferrer"
       target="_blank"
     >
